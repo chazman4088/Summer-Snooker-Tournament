@@ -4,18 +4,19 @@
   <title>Snooker Score Submission</title>
 </head>
 <body>
+  <h2>Submit Snooker Match Results</h2>
   <form id="scoreForm">
-    <label>Player 1 Name:</label>
-    <input type="text" id="player1" required><br>
+    <label for="player1">Player 1 Name:</label>
+    <input type="text" id="player1" required><br><br>
 
-    <label>Player 1 Score:</label>
-    <input type="number" id="player1Score" required><br>
+    <label for="player1Score">Player 1 Score:</label>
+    <input type="number" id="player1Score" required><br><br>
 
-    <label>Player 2 Name:</label>
-    <input type="text" id="player2" required><br>
+    <label for="player2">Player 2 Name:</label>
+    <input type="text" id="player2" required><br><br>
 
-    <label>Player 2 Score:</label>
-    <input type="number" id="player2Score" required><br>
+    <label for="player2Score">Player 2 Score:</label>
+    <input type="number" id="player2Score" required><br><br>
 
     <button type="submit">Submit</button>
   </form>
@@ -25,24 +26,38 @@
   <script>
     const form = document.getElementById('scoreForm');
     const status = document.getElementById('status');
+
+    // Put your deployed Google Apps Script Web App URL here — make sure it's inside quotes!
     const scriptURL = 'https://script.google.com/macros/s/AKfycbw4UqaNtDiopgbgIiwL8E3QwIcARM0ViTOwToawbYtx_bTGPxyNHMEqL-bIjiGTe8xa1g/exec';
 
     form.addEventListener('submit', e => {
       e.preventDefault();
 
       const data = {
-        player1: document.getElementById('player1').value,
-        score1: document.getElementById('player1Score').value,
-        player2: document.getElementById('player2').value,
-        score2: document.getElementById('player2Score').value
+        player1: document.getElementById('player1').value.trim(),
+        score1: Number(document.getElementById('player1Score').value),
+        player2: document.getElementById('player2').value.trim(),
+        score2: Number(document.getElementById('player2Score').value)
       };
+
+      // Basic validation: player names should not be empty or same
+      if (!data.player1 || !data.player2) {
+        status.textContent = 'Please enter both player names.';
+        return;
+      }
+      if (data.player1.toLowerCase() === data.player2.toLowerCase()) {
+        status.textContent = 'Player 1 and Player 2 cannot be the same person.';
+        return;
+      }
+      if (isNaN(data.score1) || isNaN(data.score2)) {
+        status.textContent = 'Please enter valid scores.';
+        return;
+      }
 
       fetch(scriptURL, {
         method: 'POST',
         body: JSON.stringify(data),
-        headers: {
-          'Content-Type': 'application/json'
-        }
+        headers: { 'Content-Type': 'application/json' }
       })
       .then(response => response.json())
       .then(responseData => {
