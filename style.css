@@ -76,6 +76,8 @@ h1 {
 }
 .page-container {
   transition: transform 0.5s ease-in-out;
+}.page-container {
+  transition: transform 0.5s ease-in-out;
 }
 
 .page-container.slide-out {
