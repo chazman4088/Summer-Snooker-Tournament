@@ -1,108 +1,86 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Snooker Score Submission</title>
-  <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      background-color: #b71c1c; /* deep red */
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-
-    form {
-      background-color: #8b0000; /* darker red */
-      padding: 30px 35px;
-      border-radius: 15px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
-      width: 320px;
-      text-align: center;
-    }
-
-    h2 {
-      margin-bottom: 25px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      color: #fff3e0;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.7);
-    }
-
-    label {
-      display: block;
-      text-align: left;
-      margin-bottom: 8px;
-      font-weight: 600;
-      color: #ffe0b2;
-    }
-
-    input[type="text"],
-    input[type="number"] {
-      width: 100%;
-      padding: 9px 12px;
-      margin-bottom: 18px;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      outline: none;
-      background-color: #c62828;
-      color: #fff;
-      box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
-      transition: background-color 0.3s ease;
-    }
-    input[type="text"]:focus,
-    input[type="number"]:focus {
-      background-color: #ef5350;
-    }
-
-    button {
-      width: 100%;
-      padding: 14px;
-      background-color: #fff3e0;
-      border: none;
-      border-radius: 10px;
-      font-size: 18px;
-      font-weight: 700;
-      color: #b71c1c;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.25);
-    }
-    button:hover {
-      background-color: #ffd54f;
-      color: #7f0000;
-    }
-
-    #status {
-      margin-top: 20px;
-      font-weight: 700;
-      min-height: 24px;
-      color: #ffe082;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.5);
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Submit Match Result</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <form id="scoreForm" method="post" action="https://script.google.com/macros/s/AKfycbw4UqaNtDiopgbgIiwL8E3QwIcARM0ViTOwToawbYtx_bTGPxyNHMEqL-bIjiGTe8xa1g/exec">
+  <form id="scoreForm">
     <h2>Submit Match Result</h2>
+
+    <label>Match (e.g. Ben v Conor):</label>
+    <input type="text" name="match" required>
+
+    <label>Date:</label>
+    <input type="date" name="date" required>
 
     <label>Player 1 Name:</label>
     <input type="text" name="player1" required>
 
-    <label>Player 1 Score:</label>
-    <input type="number" name="score1" required>
+    <label>Player 1 Frames Won:</label>
+    <input type="number" name="frames1" required min="0">
+
+    <label>Player 1 Snooker Points:</label>
+    <input type="number" name="points1" required min="0">
 
     <label>Player 2 Name:</label>
     <input type="text" name="player2" required>
 
-    <label>Player 2 Score:</label>
-    <input type="number" name="score2" required>
+    <label>Player 2 Frames Won:</label>
+    <input type="number" name="frames2" required min="0">
+
+    <label>Player 2 Snooker Points:</label>
+    <input type="number" name="points2" required min="0">
 
     <button type="submit">Submit</button>
     <p id="status"></p>
   </form>
+
+  <script>
+    const form = document.getElementById('scoreForm');
+    const status = document.getElementById('status');
+
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const data = new FormData(form);
+      const frames1 = parseInt(data.get('frames1'), 10);
+      const frames2 = parseInt(data.get('frames2'), 10);
+
+      let points1 = 1, points2 = 1; // Default if draw
+
+      if (frames1 > frames2) {
+        points1 = 3;
+        points2 = 1;
+      } else if (frames2 > frames1) {
+        points1 = 1;
+        points2 = 3;
+      }
+
+      // Add tournament points to the FormData
+      data.append("tournamentPoints1", points1);
+      data.append("tournamentPoints2", points2);
+
+      try {
+        const response = await fetch("https://script.google.com/macros/s/AKfycbw4UqaNtDiopgbgIiwL8E3QwIcARM0ViTOwToawbYtx_bTGPxyNHMEqL-bIjiGTe8xa1g/exec", {
+          method: "POST",
+          body: data,
+        });
+
+        if (response.ok) {
+          status.textContent = "Score submitted successfully!";
+          form.reset();
+        } else {
+          status.textContent = "Submission failed. Try again.";
+        }
+      } catch (error) {
+        status.textContent = "Error submitting form.";
+        console.error(error);
+      }
+    });
+  </script>
 </body>
 </html>
+
