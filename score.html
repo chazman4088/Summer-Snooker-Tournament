@@ -25,16 +25,16 @@
   <script>
     const form = document.getElementById('scoreForm');
     const status = document.getElementById('status');
-    const scriptURL = https://script.google.com/macros/s/AKfycbw4UqaNtDiopgbgIiwL8E3QwIcARM0ViTOwToawbYtx_bTGPxyNHMEqL-bIjiGTe8xa1g/exec; // Replace this!
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbw4UqaNtDiopgbgIiwL8E3QwIcARM0ViTOwToawbYtx_bTGPxyNHMEqL-bIjiGTe8xa1g/exec';
 
     form.addEventListener('submit', e => {
       e.preventDefault();
 
       const data = {
         player1: document.getElementById('player1').value,
-        player1Score: document.getElementById('player1Score').value,
+        score1: document.getElementById('player1Score').value,
         player2: document.getElementById('player2').value,
-        player2Score: document.getElementById('player2Score').value
+        score2: document.getElementById('player2Score').value
       };
 
       fetch(scriptURL, {
@@ -46,11 +46,11 @@
       })
       .then(response => response.json())
       .then(responseData => {
-        if (responseData.result === 'success') {
+        if (responseData.status === 'success') {
           status.textContent = 'Score submitted successfully!';
           form.reset();
         } else {
-          status.textContent = 'Error: ' + responseData.message;
+          status.textContent = 'Error: ' + (responseData.message || 'Unknown error');
         }
       })
       .catch(error => {
