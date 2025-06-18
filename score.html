@@ -81,25 +81,25 @@
     <label for="player1">Player 1 Name:</label>
     <select name="player1" id="player1" required>
       <option value="" disabled selected>Select player 1</option>
-      <option> Aidan </option>
-      <option> Aidan Maher </option>
-      <option> Charlie Maher </option>
-      <option> Conor Barret </option>
-      <option> Dara </option>
-      <option> Frank </option>
-      <option> Jason </option>
-      <option> JK </option>
-      <option> Joe </option>
-      <option> John McGlade </option>
-      <option> Malcom Carrigy </option>
-      <option> Mark Poland </option>
-      <option> MDK </option>
-      <option> Niall O'Connor </option>
-      <option> Paul </option>
-      <option> Peter </option>
-      <option> Richie Tighe </option>
-      <option> Stephan Campbell </option>
-      <option> William McDonald </option>
+      <option>Aidan</option>
+      <option>Aidan Maher</option>
+      <option>Charlie Maher</option>
+      <option>Conor Barret</option>
+      <option>Dara</option>
+      <option>Frank</option>
+      <option>Jason</option>
+      <option>JK</option>
+      <option>Joe</option>
+      <option>John McGlade</option>
+      <option>Malcom Carrigy</option>
+      <option>Mark Poland</option>
+      <option>MDK</option>
+      <option>Niall O'Connor</option>
+      <option>Paul</option>
+      <option>Peter</option>
+      <option>Richie Tighe</option>
+      <option>Stephan Campbell</option>
+      <option>William McDonald</option>
     </select>
 
     <label for="frames1">Player 1 Frames Won:</label>
@@ -111,25 +111,25 @@
     <label for="player2">Player 2 Name:</label>
     <select name="player2" id="player2" required>
       <option value="" disabled selected>Select player 2</option>
-      <option> Aidan </option>
-      <option> Aidan Maher </option>
-      <option> Charlie Maher </option>
-      <option> Conor Barret </option>
-      <option> Dara </option>
-      <option> Frank </option>
-      <option> Jason </option>
-      <option> JK </option>
-      <option> Joe </option>
-      <option> John McGlade </option>
-      <option> Malcom Carrigy </option>
-      <option> Mark Poland </option>
-      <option> MDK </option>
-      <option> Niall O'Connor </option>
-      <option> Paul </option>
-      <option> Peter </option>
-      <option> Richie Tighe </option>
-      <option> Stephan Campbell </option>
-      <option> William McDonald </option>
+      <option>Aidan</option>
+      <option>Aidan Maher</option>
+      <option>Charlie Maher</option>
+      <option>Conor Barret</option>
+      <option>Dara</option>
+      <option>Frank</option>
+      <option>Jason</option>
+      <option>JK</option>
+      <option>Joe</option>
+      <option>John McGlade</option>
+      <option>Malcom Carrigy</option>
+      <option>Mark Poland</option>
+      <option>MDK</option>
+      <option>Niall O'Connor</option>
+      <option>Paul</option>
+      <option>Peter</option>
+      <option>Richie Tighe</option>
+      <option>Stephan Campbell</option>
+      <option>William McDonald</option>
     </select>
 
     <label for="frames2">Player 2 Frames Won:</label>
@@ -146,22 +146,8 @@
     const form = document.getElementById('scoreForm');
     const status = document.getElementById('status');
 
-    form.addEventListener('submit', e => {
-      e.preventDefault();
+    form.addEventListener('submit', () => {
       status.textContent = 'Submitting...';
-
-      const data = new FormData(form);
-
-      fetch(form.action, {
-        method: 'POST',
-        body: data,
-        mode: 'no-cors'
-      }).then(() => {
-        status.textContent = 'Score submitted successfully!';
-        form.reset();
-      }).catch(() => {
-        status.textContent = 'Error submitting score.';
-      });
     });
   </script>
 </body>
