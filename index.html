@@ -7,14 +7,31 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header>
-    <h1>Elm Park Snooker Club</h1>
-  </header>
+  <div class="page-container">
+    <header>
+      <h1>Elm Park Snooker Club</h1>
+    </header>
 
-  <main>
-    <div class="center-button">
-      <a href="score.html" class="btn">Enter Score</a>
-    </div>
-  </main>
+    <main>
+      <div class="center-button">
+        <a href="#" class="btn" id="enterScoreBtn">Enter Score</a>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const button = document.getElementById('enterScoreBtn');
+    const container = document.querySelector('.page-container');
+
+    button.addEventListener('click', function (e) {
+      e.preventDefault(); // Stop default navigation
+      container.classList.add('slide-out');
+
+      // Delay navigation to match the animation
+      setTimeout(() => {
+        window.location.href = 'score.html';
+      }, 500); // Match this to the CSS animation duration
+    });
+  </script>
 </body>
 </html>
