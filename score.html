@@ -19,7 +19,7 @@
       padding: 30px;
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(0,0,0,0.5);
-      width: 340px;
+      width: 360px;
     }
 
     h2 {
@@ -33,10 +33,12 @@
       font-weight: bold;
     }
 
-    input {
+    input,
+    select {
       width: 100%;
-      padding: 8px;
+      padding: 12px;
       margin-top: 5px;
+      font-size: 16px;
       border: none;
       border-radius: 6px;
       background-color: #444;
@@ -46,7 +48,7 @@
     button {
       margin-top: 20px;
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       background-color: #4CAF50;
       border: none;
       color: white;
@@ -76,7 +78,28 @@
     <input type="date" name="date" required>
 
     <label for="player1">Player 1 Name:</label>
-    <input type="text" name="player1" required>
+    <select name="player1" required>
+      <option value="">Select Player 1</option>
+      <option value="Aidan">Aidan</option>
+      <option value="Aidan Maher">Aidan Maher</option>
+      <option value="Charlie Maher">Charlie Maher</option>
+      <option value="Conor Barret">Conor Barret</option>
+      <option value="Dara">Dara</option>
+      <option value="Frank">Frank</option>
+      <option value="Jason">Jason</option>
+      <option value="JK">JK</option>
+      <option value="Joe">Joe</option>
+      <option value="John McGlade">John McGlade</option>
+      <option value="Malcom Carrigy">Malcom Carrigy</option>
+      <option value="Mark Poland">Mark Poland</option>
+      <option value="MDK">MDK</option>
+      <option value="Niall O'Connor">Niall O'Connor</option>
+      <option value="Paul">Paul</option>
+      <option value="Peter">Peter</option>
+      <option value="Richie Tighe">Richie Tighe</option>
+      <option value="Stephan Campbell">Stephan Campbell</option>
+      <option value="William McDonald">William McDonald</option>
+    </select>
 
     <label for="frames1">Player 1 Frames Won:</label>
     <input type="number" name="frames1" required>
@@ -85,7 +108,28 @@
     <input type="number" name="points1" required>
 
     <label for="player2">Player 2 Name:</label>
-    <input type="text" name="player2" required>
+    <select name="player2" required>
+      <option value="">Select Player 2</option>
+      <option value="Aidan">Aidan</option>
+      <option value="Aidan Maher">Aidan Maher</option>
+      <option value="Charlie Maher">Charlie Maher</option>
+      <option value="Conor Barret">Conor Barret</option>
+      <option value="Dara">Dara</option>
+      <option value="Frank">Frank</option>
+      <option value="Jason">Jason</option>
+      <option value="JK">JK</option>
+      <option value="Joe">Joe</option>
+      <option value="John McGlade">John McGlade</option>
+      <option value="Malcom Carrigy">Malcom Carrigy</option>
+      <option value="Mark Poland">Mark Poland</option>
+      <option value="MDK">MDK</option>
+      <option value="Niall O'Connor">Niall O'Connor</option>
+      <option value="Paul">Paul</option>
+      <option value="Peter">Peter</option>
+      <option value="Richie Tighe">Richie Tighe</option>
+      <option value="Stephan Campbell">Stephan Campbell</option>
+      <option value="William McDonald">William McDonald</option>
+    </select>
 
     <label for="frames2">Player 2 Frames Won:</label>
     <input type="number" name="frames2" required>
@@ -97,4 +141,3 @@
   </form>
 </body>
 </html>
-
