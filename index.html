@@ -2,58 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Elm Park Snooker Club</title>
-  <style>
-    body {
-      background-color: #1e1e1e;
-      color: white;
-      font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-
-    h1 {
-      margin-bottom: 40px;
-      font-size: 2.5rem;
-    }
-
-    .button-container {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      width: 250px;
-    }
-
-    a.button {
-      display: block;
-      background-color: #4CAF50;
-      color: white;
-      text-align: center;
-      padding: 15px 0;
-      text-decoration: none;
-      font-size: 1.25rem;
-      border-radius: 8px;
-      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
-      user-select: none;
-      transition: background-color 0.3s ease;
-    }
-
-    a.button:hover {
-      background-color: #45a049;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Elm Park Snooker Club</h1>
+  <header>
+    <h1>Elm Park Snooker Club</h1>
+  </header>
 
-  <div class="button-container">
-    <a href="score.html" class="button">Enter Match Score</a>
-    <a href="leaderboard.html" class="button">Summer Tournament Leaderboard</a>
-  </div>
+  <main>
+    <div class="center-button">
+      <a href="score.html" class="btn">Enter Score</a>
+    </div>
+    <div class="center-button" style="margin-top: 20px;">
+      <a href="leaderboard.html" class="btn">Summer Tournament Leaderboard</a>
+    </div>
+  </main>
 </body>
 </html>
+
