@@ -74,5 +74,12 @@ h1 {
   border: 2px solid #ccc;
   border-radius: 5px;
 }
+.page-container {
+  transition: transform 0.5s ease-in-out;
+}
+
+.page-container.slide-out {
+  transform: translateX(-100%);
+}
 
 
