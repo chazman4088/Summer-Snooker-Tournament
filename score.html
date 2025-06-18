@@ -2,23 +2,99 @@
 <html>
 <head>
   <title>Snooker Score Submission</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #121212;
+      color: #eee;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    form {
+      background: #1e1e1e;
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.7);
+      width: 320px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #f39c12;
+      font-weight: 700;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: 8px 10px;
+      margin-bottom: 15px;
+      border-radius: 6px;
+      border: none;
+      outline: none;
+      font-size: 16px;
+      background: #333;
+      color: #eee;
+      transition: background 0.3s ease;
+    }
+    input[type="text"]:focus,
+    input[type="number"]:focus {
+      background: #444;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #f39c12;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 700;
+      color: #121212;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: #d88b0e;
+    }
+
+    #status {
+      margin-top: 15px;
+      text-align: center;
+      font-weight: 600;
+      min-height: 24px;
+    }
+  </style>
 </head>
 <body>
-  <h2>Submit Match Result</h2>
-  <form method="post" action="https://script.google.com/macros/s/AKfycbys_vcJzvc2mZ18thbM1ojr8rH1v9RBh3dyWyzYDtuObQvjS0YFfbOHAkD4r5FvjU1moQ/exec">
-    <label>Player 1 Name:</label><br>
-    <input type="text" name="player1" required><br><br>
+  <form id="scoreForm" method="post" action="https://script.google.com/macros/s/AKfycbw4UqaNtDiopgbgIiwL8E3QwIcARM0ViTOwToawbYtx_bTGPxyNHMEqL-bIjiGTe8xa1g/exec">
+    <h2>Submit Match Result</h2>
 
-    <label>Player 1 Score:</label><br>
-    <input type="number" name="score1" required><br><br>
+    <label>Player 1 Name:</label>
+    <input type="text" name="player1" required>
 
-    <label>Player 2 Name:</label><br>
-    <input type="text" name="player2" required><br><br>
+    <label>Player 1 Score:</label>
+    <input type="number" name="score1" required>
 
-    <label>Player 2 Score:</label><br>
-    <input type="number" name="score2" required><br><br>
+    <label>Player 2 Name:</label>
+    <input type="text" name="player2" required>
+
+    <label>Player 2 Score:</label>
+    <input type="number" name="score2" required>
 
     <button type="submit">Submit</button>
+    <p id="status"></p>
   </form>
 </body>
 </html>
