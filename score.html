@@ -1,84 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Submit Snooker Score</title>
-  <link rel="stylesheet" href="style.css" />
   <style>
     body {
-      background-color: #111;
-      color: white;
       font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    header {
-      background-color: #2c2c2c;
-      padding: 2rem;
-      border-bottom: 4px solid #4CAF50;
-      text-align: center;
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 2.5rem;
-    }
-
-    main {
-      flex: 1;
+      background-color: #1e1e1e;
+      color: white;
       display: flex;
       justify-content: center;
-      align-items: flex-start;
-      padding: 3rem 1rem;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
     }
 
     form {
       background-color: #2c2c2c;
-      padding: 2rem;
+      padding: 30px;
       border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.7);
-      width: 360px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      width: 340px;
     }
 
-    form h2 {
+    h2 {
       text-align: center;
-      margin-bottom: 1.5rem;
+      margin-bottom: 20px;
     }
 
     label {
       display: block;
-      margin-top: 1rem;
+      margin-top: 12px;
       font-weight: bold;
     }
 
     input, select {
       width: 100%;
       padding: 8px;
-      margin-top: 0.3rem;
+      margin-top: 5px;
       border: none;
       border-radius: 6px;
       background-color: #444;
       color: white;
-      font-size: 1rem;
-      box-sizing: border-box;
+      font-size: 16px;
     }
 
     button {
-      margin-top: 2rem;
+      margin-top: 20px;
       width: 100%;
-      padding: 12px;
+      padding: 10px;
       background-color: #4CAF50;
       border: none;
-      border-radius: 8px;
       color: white;
-      font-size: 1.2rem;
+      font-size: 16px;
+      border-radius: 6px;
       cursor: pointer;
-      transition: background-color 0.3s ease;
     }
 
     button:hover {
@@ -86,100 +61,86 @@
     }
 
     #status {
-      margin-top: 1rem;
       text-align: center;
-      font-weight: bold;
+      margin-top: 10px;
       color: #ffd700;
-      min-height: 1.4em;
-    }
-
-    /* Responsive tweaks */
-    @media (max-width: 400px) {
-      form {
-        width: 100%;
-        padding: 1.5rem;
-      }
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Elm Park Snooker Club</h1>
-  </header>
-  <main>
-    <form id="scoreForm" method="POST" action="https://script.google.com/macros/s/AKfycbxc4Vlz3A7soUakV8gX_Bw4Z7RRfjBZpwhiOkLAUYhY9Ef8s_lQvuWCBAaSIbSZ7pNSWw/exec">
-      <h2>Snooker Score Entry</h2>
+  <form id="scoreForm" method="POST" action="https://script.google.com/macros/s/AKfycbxu2MpF-kgrLDVD9TyZeq7qWLetvn3537rjuVtNrgrbbAILWPuKgXWzy_zh9ECr-ydgCA/exec">
+    <h2>Snooker Score Entry</h2>
 
-      <label for="match">Match (e.g., Ben v Conor):</label>
-      <input type="text" name="match" id="match" required />
+    <label for="match">Match (e.g., Ben v Conor):</label>
+    <input type="text" name="match" id="match" required>
 
-      <label for="date">Date:</label>
-      <input type="date" name="date" id="date" required />
+    <label for="date">Date:</label>
+    <input type="date" name="date" id="date" required>
 
-      <label for="player1">Player 1 Name:</label>
-      <select name="player1" id="player1" required>
-        <option value="" disabled selected>Select player 1</option>
-        <option>Aidan</option>
-        <option>Aidan Maher</option>
-        <option>Charlie Maher</option>
-        <option>Conor Barret</option>
-        <option>Dara</option>
-        <option>Frank</option>
-        <option>Jason</option>
-        <option>JK</option>
-        <option>Joe</option>
-        <option>John McGlade</option>
-        <option>Malcom Carrigy</option>
-        <option>Mark Poland</option>
-        <option>MDK</option>
-        <option>Niall O'Connor</option>
-        <option>Paul</option>
-        <option>Peter</option>
-        <option>Richie Tighe</option>
-        <option>Stephan Campbell</option>
-        <option>William McDonald</option>
-      </select>
+    <label for="player1">Player 1 Name:</label>
+    <select name="player1" id="player1" required>
+      <option value="" disabled selected>Select player 1</option>
+      <option> Aidan </option>
+      <option> Aidan Maher </option>
+      <option> Charlie Maher </option>
+      <option> Conor Barret </option>
+      <option> Dara </option>
+      <option> Frank </option>
+      <option> Jason </option>
+      <option> JK </option>
+      <option> Joe </option>
+      <option> John McGlade </option>
+      <option> Malcom Carrigy </option>
+      <option> Mark Poland </option>
+      <option> MDK </option>
+      <option> Niall O'Connor </option>
+      <option> Paul </option>
+      <option> Peter </option>
+      <option> Richie Tighe </option>
+      <option> Stephan Campbell </option>
+      <option> William McDonald </option>
+    </select>
 
-      <label for="frames1">Player 1 Frames Won:</label>
-      <input type="number" name="frames1" id="frames1" min="0" required />
+    <label for="frames1">Player 1 Frames Won:</label>
+    <input type="number" name="frames1" id="frames1" min="0" required>
 
-      <label for="points1">Player 1 Total Snooker Points:</label>
-      <input type="number" name="points1" id="points1" min="0" required />
+    <label for="points1">Player 1 Total Snooker Points:</label>
+    <input type="number" name="points1" id="points1" min="0" required>
 
-      <label for="player2">Player 2 Name:</label>
-      <select name="player2" id="player2" required>
-        <option value="" disabled selected>Select player 2</option>
-        <option>Aidan</option>
-        <option>Aidan Maher</option>
-        <option>Charlie Maher</option>
-        <option>Conor Barret</option>
-        <option>Dara</option>
-        <option>Frank</option>
-        <option>Jason</option>
-        <option>JK</option>
-        <option>Joe</option>
-        <option>John McGlade</option>
-        <option>Malcom Carrigy</option>
-        <option>Mark Poland</option>
-        <option>MDK</option>
-        <option>Niall O'Connor</option>
-        <option>Paul</option>
-        <option>Peter</option>
-        <option>Richie Tighe</option>
-        <option>Stephan Campbell</option>
-        <option>William McDonald</option>
-      </select>
+    <label for="player2">Player 2 Name:</label>
+    <select name="player2" id="player2" required>
+      <option value="" disabled selected>Select player 2</option>
+      <option> Aidan </option>
+      <option> Aidan Maher </option>
+      <option> Charlie Maher </option>
+      <option> Conor Barret </option>
+      <option> Dara </option>
+      <option> Frank </option>
+      <option> Jason </option>
+      <option> JK </option>
+      <option> Joe </option>
+      <option> John McGlade </option>
+      <option> Malcom Carrigy </option>
+      <option> Mark Poland </option>
+      <option> MDK </option>
+      <option> Niall O'Connor </option>
+      <option> Paul </option>
+      <option> Peter </option>
+      <option> Richie Tighe </option>
+      <option> Stephan Campbell </option>
+      <option> William McDonald </option>
+    </select>
 
-      <label for="frames2">Player 2 Frames Won:</label>
-      <input type="number" name="frames2" id="frames2" min="0" required />
+    <label for="frames2">Player 2 Frames Won:</label>
+    <input type="number" name="frames2" id="frames2" min="0" required>
 
-      <label for="points2">Player 2 Total Snooker Points:</label>
-      <input type="number" name="points2" id="points2" min="0" required />
+    <label for="points2">Player 2 Total Snooker Points:</label>
+    <input type="number" name="points2" id="points2" min="0" required>
 
-      <button type="submit">Submit Score</button>
-      <p id="status"></p>
-    </form>
-  </main>
+    <button type="submit">Submit Score</button>
+    <p id="status"></p>
+  </form>
 
   <script>
     const form = document.getElementById('scoreForm');
