@@ -69,34 +69,31 @@
   <a href="index.html" class="back-btn">Back to Home</a>
 
   <script>
-    // Replace with your actual deployment URL
-    const url = 'https://script.google.com/macros/s/AKfycbxu2MpF-kgrLD9TyZeq7qWLetvn3537rjuVtNrgrbbAILWPuKgXWzy_zh9ECr-ydgCA/exec';
+    function showLeaderboard(players) {
+      const tbody = document.querySelector('#leaderboard tbody');
+      if (!players || players.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5">No data available</td></tr>';
+        return;
+      }
 
-    fetch(url)
-      .then(r => r.json())
-      .then(players => {
-        const tbody = document.querySelector('#leaderboard tbody');
-        if (players.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="5">No data available</td></tr>';
-          return;
-        }
+      tbody.innerHTML = players.map((p, i) => `
+        <tr>
+          <td>${i + 1}</td>
+          <td>${p.name}</td>
+          <td>${p.points}</td>
+          <td>${p.wins}</td>
+          <td>${p.losses}</td>
+        </tr>
+      `).join('');
+    }
 
-        tbody.innerHTML = players.map((p, i) => `
-          <tr>
-            <td>${i + 1}</td>
-            <td>${p.name}</td>
-            <td>${p.points}</td>
-            <td>${p.wins}</td>
-            <td>${p.losses}</td>
-          </tr>
-        `).join('');
-      })
-      .catch(err => {
-        document.querySelector('#leaderboard tbody').innerHTML =
-          '<tr><td colspan="5">Error loading leaderboard</td></tr>';
-        console.error(err);
-      });
+    function loadLeaderboard() {
+      const script = document.createElement('script');
+      script.src = 'https://script.google.com/macros/s/AKfycbxu2MpF-kgrLDVD9TyZeq7qWLetvn3537rjuVtNrgrbbAILWPuKgXWzy_zh9ECr-ydgCA/exec?callback=showLeaderboard';
+      document.body.appendChild(script);
+    }
+
+    window.onload = loadLeaderboard;
   </script>
 </body>
 </html>
-
