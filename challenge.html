@@ -1,30 +1,132 @@
-<!-- ✅ CHANGES: remove script, point form to result.html -->
-<form method="POST" action="result.html">
-  <h2>Challenge a Player</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Challenge a Player - Elm Park Snooker Club</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #111;
+      color: white;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    header {
+      background-color: #222;
+      border-bottom: 4px solid #4CAF50;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.4rem;
+      color: #4CAF50;
+      font-weight: bold;
+    }
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 3rem 1rem;
+    }
+    form {
+      background-color: #222;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(76, 175, 80, 0.5);
+      max-width: 400px;
+      width: 100%;
+    }
+    form h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+      color: #4CAF50;
+    }
+    label {
+      display: block;
+      margin-top: 1.1rem;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+    select {
+      margin-top: 0.3rem;
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: none;
+      background-color: #333;
+      color: white;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 2rem;
+      width: 100%;
+      background-color: #4CAF50;
+      border: none;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #3e8e41;
+    }
+    .back-btn {
+      display: block;
+      margin-top: 20px;
+      text-align: center;
+      color: #4CAF50;
+      text-decoration: underline;
+      font-weight: bold;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Elm Park Snooker Club</h1>
+  </header>
+  <main>
+    <form method="GET" action="challengeresult.html">
+      <h2>Challenge a Player</h2>
 
-  <label for="player">Select Player:</label>
-  <select name="player" id="player" required>
-    <option value="" disabled selected>Select a player</option>
-    <option>Aidan</option>
-    <option>Aidan Maher</option>
-    <option>Charlie Maher</option>
-    <option>Conor Barret</option>
-    <option>Dara</option>
-    <option>Frank</option>
-    <option>Jason</option>
-    <option>JK</option>
-    <option>Joe</option>
-    <option>John McGlade</option>
-    <option>Malcom Carrigy</option>
-    <option>Mark Poland</option>
-    <option>MDK</option>
-    <option>Niall O'Connor</option>
-    <option>Paul</option>
-    <option>Peter</option>
-    <option>Richie Tighe</option>
-    <option>Stephan Campbell</option>
-    <option>William McDonald</option>
-  </select>
+      <label for="player">Select Player:</label>
+      <select name="player" id="player" required>
+        <option value="" disabled selected>Select a player</option>
+        <option>Aidan</option>
+        <option>Aidan Maher</option>
+        <option>Charlie Maher</option>
+        <option>Conor Barret</option>
+        <option>Dara</option>
+        <option>Frank</option>
+        <option>Jason</option>
+        <option>JK</option>
+        <option>Joe</option>
+        <option>John McGlade</option>
+        <option>Malcom Carrigy</option>
+        <option>Mark Poland</option>
+        <option>MDK</option>
+        <option>Niall O'Connor</option>
+        <option>Paul</option>
+        <option>Peter</option>
+        <option>Richie Tighe</option>
+        <option>Stephan Campbell</option>
+        <option>William McDonald</option>
+      </select>
 
-  <button type="submit">Submit Challenge</button>
-</form>
+      <button type="submit">Submit Challenge</button>
+    </form>
+  </main>
+
+  <a href="index.html" class="back-btn">← Back to Home</a>
+</body>
+</html>
