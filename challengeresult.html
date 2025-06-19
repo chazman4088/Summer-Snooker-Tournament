@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Challenge Result - Elm Park Snooker Club</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #111;
+      color: white;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+    }
+    h1 {
+      color: #4CAF50;
+    }
+    p {
+      font-size: 1.2rem;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Submitting Challenge...</h1>
+  <p id="result">Please wait...</p>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const formData = new FormData();
+
+    for (const [key, value] of params.entries()) {
+      formData.append(key, value);
+    }
+
+    fetch('https://script.google.com/macros/s/AKfycbzDIa7fxao0FyESBu51_wZ69Z47eUUmTE6j86667Fgz6xmBei2txdPqGaJeQQIoUmXBMw/exec', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => response.text())
+    .then(text => {
+      document.getElementById('result').textContent = text;
+      setTimeout(() => {
+        window.location.href = 'challenge.html';
+      }, 5000);
+    })
+    .catch(() => {
+      document.getElementById('result').textContent = 'An error occurred. Please try again.';
+      setTimeout(() => {
+        window.location.href = 'challenge.html';
+      }, 5000);
+    });
+  </script>
+</body>
+</html>
