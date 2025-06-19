@@ -68,7 +68,7 @@
       box-sizing: border-box;
     }
     button {
-      margin-top: 2rem;
+      margin-top: 1.5rem;
       width: 100%;
       background-color: #4CAF50;
       border: none;
@@ -82,6 +82,19 @@
     }
     button:hover {
       background-color: #3e8e41;
+    }
+    .back-home {
+      margin-top: 1rem;
+      text-align: center;
+    }
+    .back-home a {
+      color: #4CAF50;
+      font-size: 1rem;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .back-home a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
@@ -160,6 +173,10 @@
       <input type="number" name="points2" id="points2" min="0" required />
 
       <button type="submit">Submit Score</button>
+
+      <div class="back-home">
+        <a href="index.html">← Back to Home</a>
+      </div>
     </form>
   </main>
 
