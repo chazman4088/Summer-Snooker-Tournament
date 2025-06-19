@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Submission Result</title>
+  <style>
+    body {
+      background-color: #111;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      text-align: center;
+    }
+    .message {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+    .redirect {
+      font-size: 1rem;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <div class="message" id="message">Processing...</div>
+  <div class="redirect">Returning to score page in 5 seconds...</div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const status = params.get('status') || 'Unknown result';
+    document.getElementById('message').textContent = status;
+    setTimeout(() => {
+      window.location.href = 'score.html';
+    }, 5000);
+  </script>
+</body>
+</html>
