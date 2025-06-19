@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Submit Snooker Score - Elm Park Snooker Club</title>
   <style>
-    /* Basic reset and styling */
     body {
       margin: 0;
       background-color: #111;
@@ -68,11 +67,6 @@
       font-size: 1rem;
       box-sizing: border-box;
     }
-    input[type="number"]::-webkit-inner-spin-button,
-    input[type="number"]::-webkit-outer-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
     button {
       margin-top: 2rem;
       width: 100%;
@@ -89,13 +83,6 @@
     button:hover {
       background-color: #3e8e41;
     }
-    #status {
-      margin-top: 1rem;
-      text-align: center;
-      font-weight: 600;
-      min-height: 1.4em;
-      color: #ffd700;
-    }
   </style>
 </head>
 <body>
@@ -103,17 +90,17 @@
     <h1>Elm Park Snooker Club</h1>
   </header>
   <main>
-    <form id="scoreForm" method="POST" action="https://script.google.com/macros/s/AKfycbxc4Vlz3A7soUakV8gX_Bw4Z7RRfjBZpwhiOkLAUYhY9Ef8s_lQvuWCBAaSIbSZ7pNSWw/exec">
+    <form method="POST" action="https://script.google.com/macros/s/AKfycbxc4Vlz3A7soUakV8gX_Bw4Z7RRfjBZpwhiOkLAUYhY9Ef8s_lQvuWCBAaSIbSZ7pNSWw/exec">
       <h2>Submit Snooker Score</h2>
 
       <label for="match">Match (e.g. Ben v Conor):</label>
-      <input type="text" id="match" name="match" required />
+      <input type="text" name="match" id="match" required />
 
       <label for="date">Date:</label>
-      <input type="date" id="date" name="date" required />
+      <input type="date" name="date" id="date" required />
 
-      <label for="player1">Player 1 Name:</label>
-      <select id="player1" name="player1" required>
+      <label for="player1">Player 1:</label>
+      <select name="player1" id="player1" required>
         <option value="" disabled selected>Select player 1</option>
         <option>Aidan</option>
         <option>Aidan Maher</option>
@@ -137,13 +124,13 @@
       </select>
 
       <label for="frames1">Player 1 Frames Won:</label>
-      <input type="number" id="frames1" name="frames1" min="0" required />
+      <input type="number" name="frames1" id="frames1" min="0" required />
 
-      <label for="points1">Player 1 Total Snooker Points:</label>
-      <input type="number" id="points1" name="points1" min="0" required />
+      <label for="points1">Player 1 Snooker Points:</label>
+      <input type="number" name="points1" id="points1" min="0" required />
 
-      <label for="player2">Player 2 Name:</label>
-      <select id="player2" name="player2" required>
+      <label for="player2">Player 2:</label>
+      <select name="player2" id="player2" required>
         <option value="" disabled selected>Select player 2</option>
         <option>Aidan</option>
         <option>Aidan Maher</option>
@@ -167,40 +154,13 @@
       </select>
 
       <label for="frames2">Player 2 Frames Won:</label>
-      <input type="number" id="frames2" name="frames2" min="0" required />
+      <input type="number" name="frames2" id="frames2" min="0" required />
 
-      <label for="points2">Player 2 Total Snooker Points:</label>
-      <input type="number" id="points2" name="points2" min="0" required />
+      <label for="points2">Player 2 Snooker Points:</label>
+      <input type="number" name="points2" id="points2" min="0" required />
 
       <button type="submit">Submit Score</button>
-
-      <p id="status"></p>
     </form>
   </main>
-
-  <script>
-    const form = document.getElementById('scoreForm');
-    const status = document.getElementById('status');
-
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      status.textContent = 'Submitting...';
-
-      const formData = new FormData(form);
-
-      fetch(form.action, {
-        method: 'POST',
-        body: formData,
-        mode: 'no-cors'  // prevents CORS error on Google Apps Script
-      })
-      .then(() => {
-        status.textContent = 'Score submitted successfully!';
-        form.reset();
-      })
-      .catch(() => {
-        status.textContent = 'Error submitting score. Please try again.';
-      });
-    });
-  </script>
 </body>
 </html>
