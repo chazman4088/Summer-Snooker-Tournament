@@ -170,12 +170,11 @@
       <thead>
         <tr>
           <th>Player</th>
-          <th>Challenges</th>
           <th>Challenged By</th>
         </tr>
       </thead>
       <tbody>
-        <tr><td colspan="3">Loading...</td></tr>
+        <tr><td colspan="2">Loading...</td></tr>
       </tbody>
     </table>
   </main>
@@ -183,7 +182,6 @@
   <a href="index.html" class="back-btn">← Back to Home</a>
 
   <script>
-    // ✅ Replace with your actual deployed Apps Script Web App URL
     const scriptURL = "https://script.google.com/macros/s/AKfycbzDIa7fxao0FyESBu51_wZ69Z47eUUmTE6j86667Fgz6xmBei2txdPqGaJeQQIoUmXBMw/exec";
 
     function loadChallenges() {
@@ -195,17 +193,23 @@
     function showChallenges(data) {
       const tbody = document.querySelector('#challengeTable tbody');
       if (!Array.isArray(data) || data.length === 0) {
-        tbody.innerHTML = "<tr><td colspan='3'>No challenges found</td></tr>";
+        tbody.innerHTML = "<tr><td colspan='2'>No challenges found</td></tr>";
         return;
       }
 
-      tbody.innerHTML = data.map(row => `
-        <tr>
-          <td>${row.player}</td>
-          <td>${row.challenges}</td>
-          <td>${row.challengedBy || ''}</td>
-        </tr>
-      `).join('');
+      let rows = [];
+
+      data.forEach(row => {
+        const player = row.player;
+        const challengers = (row.challengedBy || "").split(" and ");
+        challengers.forEach(challenger => {
+          if (challenger.trim()) {
+            rows.push(`<tr><td>${player}</td><td>${challenger}</td></tr>`);
+          }
+        });
+      });
+
+      tbody.innerHTML = rows.length ? rows.join("") : "<tr><td colspan='2'>No challenges found</td></tr>";
     }
 
     window.onload = loadChallenges;
