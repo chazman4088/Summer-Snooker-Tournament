@@ -222,7 +222,7 @@
       }).then(() => {
         loadChallenges();
       }).catch(() => {
-        alert("Error clearing challenge.");
+        alert("Error deleting challenge.");
       });
     }
 
@@ -239,7 +239,7 @@
           <td>${row.challengedBy}</td>
           <td>${formatDateString(row.date)}</td>
           <td>${formatDateString(row.dueDate)}</td>
-          <td><button class="clear-btn" onclick="clearChallenge('${row.player}', '${row.challengedBy}')">Clear</button></td>
+          <td><button class="clear-btn" onclick="clearChallenge('${row.player}', '${row.challengedBy}')">Delete</button></td>
         </tr>
       `);
 
