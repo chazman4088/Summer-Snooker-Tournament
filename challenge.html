@@ -109,6 +109,18 @@
     tr:nth-child(even) {
       background-color: #1a1a1a;
     }
+    .clear-btn {
+      background-color: #e53935;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .clear-btn:hover {
+      background-color: #c62828;
+    }
   </style>
 </head>
 <body>
@@ -173,10 +185,11 @@
           <th>Challenged By</th>
           <th>Date</th>
           <th>Due Date</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
-        <tr><td colspan="4">Loading...</td></tr>
+        <tr><td colspan="5">Loading...</td></tr>
       </tbody>
     </table>
   </main>
@@ -186,30 +199,37 @@
   <script>
     const scriptURL = "https://script.google.com/macros/s/AKfycbzDIa7fxao0FyESBu51_wZ69Z47eUUmTE6j86667Fgz6xmBei2txdPqGaJeQQIoUmXBMw/exec";
 
-    function loadChallenges() {
-      const script = document.createElement('script');
-      script.src = scriptURL + "?callback=showChallenges";
-      document.body.appendChild(script);
-    }
-
     function formatDateString(dateStr) {
       if (!dateStr) return "";
       if (/^\d{2}\/\d{2}\/\d{4}$/.test(dateStr)) return dateStr;
-
       const d = new Date(dateStr);
       if (isNaN(d)) return "";
-
       const day = String(d.getDate()).padStart(2, '0');
       const month = String(d.getMonth() + 1).padStart(2, '0');
       const year = d.getFullYear();
-
       return `${day}/${month}/${year}`;
+    }
+
+    function clearChallenge(player, challenger) {
+      const formData = new FormData();
+      formData.append("action", "clear");
+      formData.append("player", player);
+      formData.append("challenger", challenger);
+
+      fetch(scriptURL, {
+        method: "POST",
+        body: formData
+      }).then(() => {
+        loadChallenges();
+      }).catch(() => {
+        alert("Error clearing challenge.");
+      });
     }
 
     function showChallenges(data) {
       const tbody = document.querySelector('#challengeTable tbody');
       if (!Array.isArray(data) || data.length === 0) {
-        tbody.innerHTML = "<tr><td colspan='4'>No challenges found</td></tr>";
+        tbody.innerHTML = "<tr><td colspan='5'>No challenges found</td></tr>";
         return;
       }
 
@@ -219,10 +239,17 @@
           <td>${row.challengedBy}</td>
           <td>${formatDateString(row.date)}</td>
           <td>${formatDateString(row.dueDate)}</td>
+          <td><button class="clear-btn" onclick="clearChallenge('${row.player}', '${row.challengedBy}')">Clear</button></td>
         </tr>
       `);
 
       tbody.innerHTML = rows.join('');
+    }
+
+    function loadChallenges() {
+      const script = document.createElement('script');
+      script.src = scriptURL + "?callback=showChallenges";
+      document.body.appendChild(script);
     }
 
     window.onload = loadChallenges;
