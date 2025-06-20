@@ -1,3 +1,4 @@
+<!-- ✅ challenge.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -165,7 +166,6 @@
       <button type="submit">Submit Challenge</button>
     </form>
 
-    <!-- ✅ Updated Challenge Table -->
     <table id="challengeTable">
       <thead>
         <tr>
@@ -199,28 +199,16 @@
         return;
       }
 
-      let rows = [];
+      const rows = data.map(row => `
+        <tr>
+          <td>${row.player}</td>
+          <td>${row.challengedBy}</td>
+          <td>${row.date}</td>
+          <td>${row.dueDate}</td>
+        </tr>
+      `);
 
-      data.forEach(row => {
-        const player = row.player;
-        const date = row.date || "";
-        const dueDate = row.dueDate || "";
-        const challengers = (row.challengedBy || "").split(" and ");
-        challengers.forEach(challenger => {
-          if (challenger.trim()) {
-            rows.push(` 
-              <tr>
-                <td>${player}</td>
-                <td>${challenger}</td>
-                <td>${date}</td>
-                <td>${dueDate}</td>
-              </tr>
-            `);
-          }
-        });
-      });
-
-      tbody.innerHTML = rows.length ? rows.join("") : "<tr><td colspan='4'>No challenges found</td></tr>";
+      tbody.innerHTML = rows.join('');
     }
 
     window.onload = loadChallenges;
