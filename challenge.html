@@ -93,8 +93,8 @@
     table {
       border-collapse: collapse;
       margin-top: 30px;
-      width: 90%;
-      max-width: 600px;
+      width: 95%;
+      max-width: 800px;
     }
     th, td {
       border: 1px solid #444;
@@ -165,16 +165,18 @@
       <button type="submit">Submit Challenge</button>
     </form>
 
-    <!-- ✅ Challenge Table -->
+    <!-- ✅ Updated Challenge Table -->
     <table id="challengeTable">
       <thead>
         <tr>
           <th>Player</th>
           <th>Challenged By</th>
+          <th>Date</th>
+          <th>Due Date</th>
         </tr>
       </thead>
       <tbody>
-        <tr><td colspan="2">Loading...</td></tr>
+        <tr><td colspan="4">Loading...</td></tr>
       </tbody>
     </table>
   </main>
@@ -193,7 +195,7 @@
     function showChallenges(data) {
       const tbody = document.querySelector('#challengeTable tbody');
       if (!Array.isArray(data) || data.length === 0) {
-        tbody.innerHTML = "<tr><td colspan='2'>No challenges found</td></tr>";
+        tbody.innerHTML = "<tr><td colspan='4'>No challenges found</td></tr>";
         return;
       }
 
@@ -201,15 +203,24 @@
 
       data.forEach(row => {
         const player = row.player;
+        const date = row.date || "";
+        const dueDate = row.dueDate || "";
         const challengers = (row.challengedBy || "").split(" and ");
         challengers.forEach(challenger => {
           if (challenger.trim()) {
-            rows.push(`<tr><td>${player}</td><td>${challenger}</td></tr>`);
+            rows.push(`
+              <tr>
+                <td>${player}</td>
+                <td>${challenger}</td>
+                <td>${date}</td>
+                <td>${dueDate}</td>
+              </tr>
+            `);
           }
         });
       });
 
-      tbody.innerHTML = rows.length ? rows.join("") : "<tr><td colspan='2'>No challenges found</td></tr>";
+      tbody.innerHTML = rows.length ? rows.join("") : "<tr><td colspan='4'>No challenges found</td></tr>";
     }
 
     window.onload = loadChallenges;
