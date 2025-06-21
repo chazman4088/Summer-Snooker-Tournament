@@ -90,7 +90,6 @@
       font-weight: bold;
       font-size: 1rem;
     }
-
     .table-wrapper {
       width: 100%;
       overflow-x: auto;
@@ -242,15 +241,30 @@
         return;
       }
 
-      const rows = data.map(row => `
-        <tr>
-          <td>${row.player}</td>
-          <td>${row.challengedBy}</td>
-          <td>${formatDateString(row.date)}</td>
-          <td>${formatDateString(row.dueDate)}</td>
-          <td><button class="clear-btn" onclick="clearChallenge('${row.player}', '${row.challengedBy}')">Delete</button></td>
-        </tr>
-      `);
+      const rows = data.map(row => {
+        const dueDateStr = formatDateString(row.dueDate);
+        const dueParts = dueDateStr.split('/');
+        const dueDate = new Date(`${dueParts[2]}-${dueParts[1]}-${dueParts[0]}`);
+        const today = new Date();
+        const diffDays = Math.ceil((dueDate - today) / (1000 * 60 * 60 * 24));
+        let dueStyle = "";
+
+        if (diffDays < 0) {
+          dueStyle = 'style="background-color:#b71c1c;"'; // red
+        } else if (diffDays <= 2) {
+          dueStyle = 'style="background-color:#ff9800;"'; // orange
+        }
+
+        return `
+          <tr>
+            <td>${row.player}</td>
+            <td>${row.challengedBy}</td>
+            <td>${formatDateString(row.date)}</td>
+            <td ${dueStyle}>${dueDateStr}</td>
+            <td><button class="clear-btn" onclick="clearChallenge('${row.player}', '${row.challengedBy}')">Delete</button></td>
+          </tr>
+        `;
+      });
 
       tbody.innerHTML = rows.join('');
     }
