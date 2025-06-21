@@ -93,12 +93,12 @@
     .table-wrapper {
       width: 100%;
       overflow-x: auto;
-      display: flex;
-      justify-content: center;
+      -webkit-overflow-scrolling: touch; /* iOS momentum scroll */
+      display: block;
     }
     table {
       border-collapse: collapse;
-      margin-top: 30px;
+      margin: 30px auto 0;
       width: 100%;
       min-width: 600px;
       max-width: 800px;
