@@ -1,1 +1,96 @@
-hi
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>High Breaks - Elm Park Snooker Club</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #111;
+      color: white;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      margin-bottom: 20px;
+      color: #4CAF50;
+    }
+    table {
+      margin: 0 auto;
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 500px;
+    }
+    th, td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #444;
+    }
+    th {
+      background-color: #222;
+      font-size: 18px;
+      color: #4CAF50;
+    }
+    td {
+      font-size: 16px;
+    }
+    tr:nth-child(even) {
+      background-color: #1a1a1a;
+    }
+    .back-btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+    }
+    .back-btn:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <h1>High Breaks</h1>
+
+  <table id="highBreakTable">
+    <thead>
+      <tr>
+        <th>Player</th>
+        <th>Break</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="3">Loading...</td></tr>
+    </tbody>
+  </table>
+
+  <a href="index.html" class="back-btn">← Back to Home</a>
+
+  <script>
+    fetch('https://script.google.com/macros/s/AKfycbxc4Vlz3A7soUakV8gX_Bw4Z7RRfjBZpwhiOkLAUYhY9Ef8s_lQvuWCBAaSIbSZ7pNSWw/exec?function=doGetHighBreaks')
+      .then(res => res.json())
+      .then(data => {
+        const tbody = document.querySelector('#highBreakTable tbody');
+        if (!Array.isArray(data) || data.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="3">No high breaks recorded yet</td></tr>';
+          return;
+        }
+        tbody.innerHTML = data.map(entry => `
+          <tr>
+            <td>${entry.player}</td>
+            <td>${entry.break}</td>
+            <td>${entry.date}</td>
+          </tr>
+        `).join('');
+      })
+      .catch(() => {
+        const tbody = document.querySelector('#highBreakTable tbody');
+        tbody.innerHTML = '<tr><td colspan="3">Error loading high breaks.</td></tr>';
+      });
+  </script>
+</body>
+</html>
