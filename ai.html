@@ -16,6 +16,7 @@
       justify-content: center;
       height: 100vh;
       padding: 0 20px;
+      margin: 0;
     }
     h1 {
       text-shadow: 0 0 10px #00ff88;
@@ -33,6 +34,8 @@
       white-space: pre-wrap;
       font-size: 16px;
       margin-bottom: 10px;
+      display: flex;
+      flex-direction: column;
     }
     label {
       font-weight: bold;
@@ -41,16 +44,17 @@
     }
     textarea {
       width: 100%;
-      height: 120px;
+      height: 80px;  /* smaller so input is more chat-like */
       background-color: black;
       color: #00ff88;
       border: 1px solid #00ff88;
       padding: 10px;
       font-size: 16px;
       resize: none;
+      font-family: 'Courier New', monospace;
     }
     .submit-btn {
-      margin-top: 15px;
+      margin-top: 10px;
       background-color: #00ff88;
       color: black;
       border: none;
@@ -60,6 +64,7 @@
       font-family: inherit;
       font-size: 16px;
       transition: background-color 0.3s;
+      align-self: flex-end;
     }
     .submit-btn:hover {
       background-color: #00cc66;
@@ -73,6 +78,7 @@
     }
     .chat-entry {
       margin-bottom: 15px;
+      word-break: break-word;
     }
     .user-text {
       color: #00ff88;
@@ -83,25 +89,55 @@
       font-weight: bold;
       margin-left: 10px;
       white-space: pre-wrap;
+      display: inline-block;
+      max-width: 100%;
+    }
+
+    /* Container for input and button */
+    .input-container {
+      width: 100%;
+      max-width: 600px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Spinner styling */
+    .spinner {
+      margin: 10px auto;
+      width: 40px;
+      height: 40px;
+      border: 4px solid #00ff88;
+      border-top: 4px solid transparent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      display: none; /* hidden by default */
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
   </style>
 </head>
 <body>
   <h1>ASK AI</h1>
-  <div class="terminal-box" id="chatBox">
+  <div class="terminal-box" id="chatBox" aria-live="polite" aria-atomic="true" role="log">
     <!-- Chat messages will appear here -->
   </div>
-  <div>
+
+  <div class="input-container">
     <label for="question">Player, enter your question:</label>
-    <textarea id="question" name="question" required></textarea>
-    <button id="submitBtn" class="submit-btn">Submit</button>
+    <textarea id="question" name="question" required aria-label="Question input"></textarea>
+    <button id="submitBtn" class="submit-btn" aria-label="Submit question">Submit</button>
+    <div class="spinner" id="spinner" role="status" aria-live="polite" aria-label="Loading"></div>
   </div>
+
   <a href="index.html" class="back-link">Return to HQ</a>
 
   <script>
     const submitBtn = document.getElementById('submitBtn');
     const questionBox = document.getElementById('question');
     const chatBox = document.getElementById('chatBox');
+    const spinner = document.getElementById('spinner');
 
     function appendMessage(sender, text) {
       const entry = document.createElement('div');
@@ -118,8 +154,8 @@
       entry.appendChild(textSpan);
       chatBox.appendChild(entry);
 
-      // Scroll chat box to bottom
-      chatBox.scrollTop = chatBox.scrollHeight;
+      // Scroll chat box to bottom smoothly
+      chatBox.scrollTo({ top: chatBox.scrollHeight, behavior: 'smooth' });
     }
 
     submitBtn.addEventListener('click', async () => {
@@ -132,9 +168,12 @@
       // Append user question
       appendMessage('Agent', question);
 
+      // Disable UI and show spinner
       submitBtn.disabled = true;
-      questionBox.value = '';
       questionBox.disabled = true;
+      spinner.style.display = 'block';
+
+      questionBox.value = '';
 
       try {
         const response = await fetch('https://script.google.com/macros/s/AKfycbx4KhwAoNfeX-dja32ErJKmTNY6F_q6a_Q5CYPhQ0u_kQlQOJFkP2rGRg-xdBEfLASxrA/exec', {
@@ -155,7 +194,15 @@
       } finally {
         submitBtn.disabled = false;
         questionBox.disabled = false;
+        spinner.style.display = 'none';
         questionBox.focus();
+      }
+    });
+
+    // Optional: submit on Ctrl+Enter or Cmd+Enter
+    questionBox.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        submitBtn.click();
       }
     });
   </script>
