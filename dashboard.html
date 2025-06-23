@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard - Elm Park Snooker Club</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Elm Park Snooker Club - Dashboard</h1>
+  </header>
+
+  <main>
+    <div class="chart-container">
+      <h2>Player Winrate</h2>
+      <canvas id="winrateChart"></canvas>
+    </div>
+
+    <div class="chart-container">
+      <h2>Player Average Points Conceded Per Frame</h2>
+      <canvas id="concededPointsChart"></canvas>
+    </div>
+
+    <div class="chart-container">
+      <h2>Average Points Scored Per Frame</h2>
+      <canvas id="scoredPointsChart"></canvas>
+    </div>
+
+    <div class="chart-container">
+      <h2>Player Total Number of Matches Played</h2>
+      <canvas id="matchesPlayedChart"></canvas>
+    </div>
+
+    <div class="chart-container">
+      <h2>Total Matches Played</h2>
+      <canvas id="totalMatchesChart"></canvas>
+    </div>
+  </main>
+
+  <script>
+    // Function to fetch and process data from Google Sheet
+    function fetchData() {
+      const scriptURL = "https://script.google.com/macros/s/AKfycbxc4Vlz3A7soUakV8gX_Bw4Z7RRfjBZpwhiOkLAUYhY9Ef8s_lQvuWCBAaSIbSZ7pNSWw/exec";
+      
+      fetch(scriptURL)
+        .then(response => response.json())
+        .then(data => {
+          processAndRenderCharts(data);
+        })
+        .catch(error => console.error('Error fetching data:', error));
+    }
+
+    // Function to process the data and render charts
+    function processAndRenderCharts(data) {
+      const players = [];
+      const winrates = [];
+      const avgConcededPoints = [];
+      const avgScoredPoints = [];
+      const totalMatches = [];
+      
+      // Process data for each player
+      data.forEach(match => {
+        const { player1, player2, frames1, frames2, points1, points2 } = match;
+
+        // Process winrate, scored and conceded points, matches played
+        if (!players.includes(player1)) players.push(player1);
+        if (!players.includes(player2)) players.push(player2);
+
+        // Update winrate, points scored and conceded, and total matches for both players
+        // Code for processing these metrics goes here (calculation logic for winrate, points, etc.)
+      });
+
+      // Render graphs using Chart.js
+      renderWinrateChart(winrates, players);
+      renderConcededPointsChart(avgConcededPoints, players);
+      renderScoredPointsChart(avgScoredPoints, players);
+      renderMatchesPlayedChart(totalMatches, players);
+      renderTotalMatchesChart(totalMatches);
+    }
+
+    // Chart rendering functions
+    function renderWinrateChart(winrates, players) {
+      const ctx = document.getElementById('winrateChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: players,
+          datasets: [{
+            label: 'Winrate',
+            data: winrates,
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+          }]
+        }
+      });
+    }
+
+    // Similar functions for other charts...
+
+    window.onload = fetchData;
+  </script>
+</body>
+</html>
