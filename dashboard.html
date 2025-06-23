@@ -3,104 +3,180 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard - Elm Park Snooker Club</title>
+  <title>Elm Park Snooker Club - Dashboard</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <header>
     <h1>Elm Park Snooker Club - Dashboard</h1>
+    <nav>
+      <a href="index.html" class="btn">Back to Home</a>
+    </nav>
   </header>
 
   <main>
-    <div class="chart-container">
-      <h2>Player Winrate</h2>
-      <canvas id="winrateChart"></canvas>
+    <h2>Player Stats</h2>
+
+    <div class="charts">
+      <div class="chart-container">
+        <canvas id="winRateChart"></canvas>
+      </div>
+      <div class="chart-container">
+        <canvas id="pointsConcededChart"></canvas>
+      </div>
+      <div class="chart-container">
+        <canvas id="pointsScoredChart"></canvas>
+      </div>
+      <div class="chart-container">
+        <canvas id="matchesPlayedChart"></canvas>
+      </div>
     </div>
 
-    <div class="chart-container">
-      <h2>Player Average Points Conceded Per Frame</h2>
-      <canvas id="concededPointsChart"></canvas>
-    </div>
-
-    <div class="chart-container">
-      <h2>Average Points Scored Per Frame</h2>
-      <canvas id="scoredPointsChart"></canvas>
-    </div>
-
-    <div class="chart-container">
-      <h2>Player Total Number of Matches Played</h2>
-      <canvas id="matchesPlayedChart"></canvas>
-    </div>
-
-    <div class="chart-container">
-      <h2>Total Matches Played</h2>
-      <canvas id="totalMatchesChart"></canvas>
-    </div>
+    <h3>Total Matches Played</h3>
+    <div id="totalMatchesPlayed"></div>
   </main>
 
   <script>
-    // Function to fetch and process data from Google Sheet
-    function fetchData() {
-      const scriptURL = "https://script.google.com/macros/s/AKfycbxc4Vlz3A7soUakV8gX_Bw4Z7RRfjBZpwhiOkLAUYhY9Ef8s_lQvuWCBAaSIbSZ7pNSWw/exec";
-      
-      fetch(scriptURL)
-        .then(response => response.json())
-        .then(data => {
-          processAndRenderCharts(data);
-        })
-        .catch(error => console.error('Error fetching data:', error));
-    }
+    // Fetching player stats from Google Sheets using the doGet function
+    const fetchPlayerStats = async () => {
+      const url = "https://script.google.com/macros/s/AKfycbxc4Vlz3A7soUakV8gX_Bw4Z7RRfjBZpwhiOkLAUYhY9Ef8s_lQvuWCBAaSIbSZ7pNSWw/exec";
+      const response = await fetch(url);
+      const data = await response.json();
 
-    // Function to process the data and render charts
-    function processAndRenderCharts(data) {
-      const players = [];
-      const winrates = [];
-      const avgConcededPoints = [];
-      const avgScoredPoints = [];
-      const totalMatches = [];
-      
-      // Process data for each player
-      data.forEach(match => {
-        const { player1, player2, frames1, frames2, points1, points2 } = match;
+      return data;
+    };
 
-        // Process winrate, scored and conceded points, matches played
-        if (!players.includes(player1)) players.push(player1);
-        if (!players.includes(player2)) players.push(player2);
+    // Process player data to calculate required stats
+    const processData = (players) => {
+      const playerStats = players.map(player => {
+        const totalMatches = player.wins + player.losses;
+        const winRate = (totalMatches === 0) ? 0 : (player.wins / totalMatches) * 100;
+        const avgPointsConceded = totalMatches === 0 ? 0 : (player.losses / totalMatches); // Approximation for average points conceded per frame
+        const avgPointsScored = totalMatches === 0 ? 0 : (player.wins / totalMatches); // Approximation for average points scored per frame
 
-        // Update winrate, points scored and conceded, and total matches for both players
-        // Code for processing these metrics goes here (calculation logic for winrate, points, etc.)
+        return {
+          name: player.name,
+          winRate,
+          avgPointsConceded,
+          avgPointsScored,
+          totalMatches
+        };
       });
 
-      // Render graphs using Chart.js
-      renderWinrateChart(winrates, players);
-      renderConcededPointsChart(avgConcededPoints, players);
-      renderScoredPointsChart(avgScoredPoints, players);
-      renderMatchesPlayedChart(totalMatches, players);
-      renderTotalMatchesChart(totalMatches);
-    }
+      return playerStats;
+    };
 
-    // Chart rendering functions
-    function renderWinrateChart(winrates, players) {
-      const ctx = document.getElementById('winrateChart').getContext('2d');
-      new Chart(ctx, {
-        type: 'bar',
+    // Render the charts
+    const renderCharts = (playerStats) => {
+      const labels = playerStats.map(player => player.name);
+
+      // Win Rate Chart
+      const winRateData = playerStats.map(player => player.winRate);
+      const winRateChart = new Chart(document.getElementById("winRateChart"), {
+        type: "bar",
         data: {
-          labels: players,
+          labels: labels,
           datasets: [{
-            label: 'Winrate',
-            data: winrates,
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderColor: 'rgba(75, 192, 192, 1)',
+            label: "Player Win Rate",
+            data: winRateData,
+            backgroundColor: "rgba(75, 192, 192, 0.2)",
+            borderColor: "rgba(75, 192, 192, 1)",
             borderWidth: 1
           }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
         }
       });
-    }
 
-    // Similar functions for other charts...
+      // Points Conceded Chart
+      const pointsConcededData = playerStats.map(player => player.avgPointsConceded);
+      const pointsConcededChart = new Chart(document.getElementById("pointsConcededChart"), {
+        type: "bar",
+        data: {
+          labels: labels,
+          datasets: [{
+            label: "Player Average Points Conceded Per Frame",
+            data: pointsConcededData,
+            backgroundColor: "rgba(255, 159, 64, 0.2)",
+            borderColor: "rgba(255, 159, 64, 1)",
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
 
-    window.onload = fetchData;
+      // Points Scored Chart
+      const pointsScoredData = playerStats.map(player => player.avgPointsScored);
+      const pointsScoredChart = new Chart(document.getElementById("pointsScoredChart"), {
+        type: "bar",
+        data: {
+          labels: labels,
+          datasets: [{
+            label: "Player Average Points Scored Per Frame",
+            data: pointsScoredData,
+            backgroundColor: "rgba(153, 102, 255, 0.2)",
+            borderColor: "rgba(153, 102, 255, 1)",
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+
+      // Matches Played Chart
+      const matchesPlayedData = playerStats.map(player => player.totalMatches);
+      const matchesPlayedChart = new Chart(document.getElementById("matchesPlayedChart"), {
+        type: "bar",
+        data: {
+          labels: labels,
+          datasets: [{
+            label: "Player Total Matches Played",
+            data: matchesPlayedData,
+            backgroundColor: "rgba(255, 99, 132, 0.2)",
+            borderColor: "rgba(255, 99, 132, 1)",
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+
+      // Display total matches played
+      const totalMatchesPlayed = playerStats.reduce((total, player) => total + player.totalMatches, 0);
+      document.getElementById("totalMatchesPlayed").innerText = `Total Matches Played: ${totalMatchesPlayed}`;
+    };
+
+    // Fetch and render player stats and charts
+    const init = async () => {
+      const playersData = await fetchPlayerStats();
+      const playerStats = processData(playersData);
+      renderCharts(playerStats);
+    };
+
+    // Call the init function
+    init();
   </script>
 </body>
 </html>
