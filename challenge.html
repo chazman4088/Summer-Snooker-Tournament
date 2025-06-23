@@ -93,7 +93,6 @@
     .table-wrapper {
       width: 100%;
       overflow-x: auto;
-      -webkit-overflow-scrolling: touch; /* iOS momentum scroll */
       display: block;
     }
     table {
@@ -212,6 +211,7 @@
 
   <script>
     const scriptURL = "https://script.google.com/macros/s/AKfycbzDIa7fxao0FyESBu51_wZ69Z47eUUmTE6j86667Fgz6xmBei2txdPqGaJeQQIoUmXBMw/exec";
+    let challengeData = [];
 
     function formatDateString(dateStr) {
       if (!dateStr) return "";
@@ -241,6 +241,8 @@
     }
 
     function showChallenges(data) {
+      challengeData = data;
+
       const tbody = document.querySelector('#challengeTable tbody');
       if (!Array.isArray(data) || data.length === 0) {
         tbody.innerHTML = "<tr><td colspan='5'>No challenges found</td></tr>";
@@ -256,9 +258,9 @@
         let dueStyle = "";
 
         if (diffDays < 0) {
-          dueStyle = 'style="background-color:#b71c1c;"'; // red
+          dueStyle = 'style="background-color:#b71c1c;"';
         } else if (diffDays <= 2) {
-          dueStyle = 'style="background-color:#ff9800;"'; // orange
+          dueStyle = 'style="background-color:#ff9800;"';
         }
 
         return `
@@ -281,7 +283,31 @@
       document.body.appendChild(script);
     }
 
-    window.onload = loadChallenges;
+    window.onload = function () {
+      loadChallenges();
+
+      const form = document.querySelector("form");
+      form.addEventListener("submit", function (e) {
+        const selectedPlayer = document.getElementById("player").value;
+        const thisWeek = new Date();
+        const startOfWeek = new Date(thisWeek);
+        startOfWeek.setDate(thisWeek.getDate() - thisWeek.getDay());
+
+        const count = challengeData.filter(c => {
+          if (c.player !== selectedPlayer) return false;
+          const parts = c.date.split('/');
+          const challengeDate = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`);
+          return challengeDate >= startOfWeek;
+        }).length;
+
+        if (count >= 2) {
+          const confirmProceed = confirm(`${selectedPlayer} has already been challenged twice this week. Do you still want to proceed?`);
+          if (!confirmProceed) {
+            e.preventDefault();
+          }
+        }
+      });
+    };
   </script>
 </body>
 </html>
