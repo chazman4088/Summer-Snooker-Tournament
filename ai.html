@@ -1,1 +1,88 @@
-hi
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ask AI - Elm Park Snooker</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      background: black;
+      color: #00ff88;
+      font-family: 'Courier New', Courier, monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      padding: 0 20px;
+    }
+
+    h1 {
+      text-shadow: 0 0 10px #00ff88;
+      margin-bottom: 20px;
+    }
+
+    .terminal-box {
+      border: 2px solid #00ff88;
+      padding: 20px;
+      width: 100%;
+      max-width: 600px;
+      background-color: rgba(0, 0, 0, 0.8);
+      box-shadow: 0 0 20px #00ff88;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 120px;
+      background-color: black;
+      color: #00ff88;
+      border: 1px solid #00ff88;
+      padding: 10px;
+      font-size: 16px;
+      resize: none;
+    }
+
+    .submit-btn {
+      margin-top: 15px;
+      background-color: #00ff88;
+      color: black;
+      border: none;
+      padding: 10px 20px;
+      font-weight: bold;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+
+    .submit-btn:hover {
+      background-color: #00cc66;
+    }
+
+    .back-link {
+      margin-top: 20px;
+      color: #00ff88;
+      text-decoration: underline;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <h1>MISSION: ASK AI</h1>
+  <div class="terminal-box">
+    <form action="https://script.google.com/macros/s/AKfycbx4KhwAoNfeX-dja32ErJKmTNY6F_q6a_Q5CYPhQ0u_kQlQOJFkP2rGRg-xdBEfLASxrA/exec" method="POST" enctype="application/x-www-form-urlencoded">
+      <label for="question">Agent, enter your question:</label>
+      <textarea id="question" name="question" required></textarea>
+      <button type="submit" class="submit-btn">Submit</button>
+    </form>
+  </div>
+  <a href="index.html" class="back-link">Return to HQ</a>
+</body>
+</html>
