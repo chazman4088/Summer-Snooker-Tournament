@@ -28,6 +28,11 @@
       max-width: 600px;
       background-color: rgba(0, 0, 0, 0.8);
       box-shadow: 0 0 20px #00ff88;
+      max-height: 400px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      font-size: 16px;
+      margin-bottom: 10px;
     }
     label {
       font-weight: bold;
@@ -66,33 +71,56 @@
       display: block;
       text-align: center;
     }
-    .answer-box {
-      margin-top: 20px;
+    .chat-entry {
+      margin-bottom: 15px;
+    }
+    .user-text {
+      color: #00ff88;
+      font-weight: bold;
+    }
+    .ai-text {
+      color: #00cc66;
+      font-weight: bold;
+      margin-left: 10px;
       white-space: pre-wrap;
-      border: 2px solid #00ff88;
-      padding: 15px;
-      background-color: rgba(0, 0, 0, 0.9);
-      box-shadow: 0 0 10px #00ff88;
-      max-width: 600px;
-      width: 100%;
-      font-family: 'Courier New', monospace;
     }
   </style>
 </head>
 <body>
   <h1>ASK AI</h1>
-  <div class="terminal-box">
+  <div class="terminal-box" id="chatBox">
+    <!-- Chat messages will appear here -->
+  </div>
+  <div>
     <label for="question">Player, enter your question:</label>
     <textarea id="question" name="question" required></textarea>
     <button id="submitBtn" class="submit-btn">Submit</button>
   </div>
-  <div id="answer" class="answer-box" style="display:none;"></div>
   <a href="index.html" class="back-link">Return to HQ</a>
 
   <script>
     const submitBtn = document.getElementById('submitBtn');
     const questionBox = document.getElementById('question');
-    const answerDiv = document.getElementById('answer');
+    const chatBox = document.getElementById('chatBox');
+
+    function appendMessage(sender, text) {
+      const entry = document.createElement('div');
+      entry.classList.add('chat-entry');
+
+      const senderSpan = document.createElement('span');
+      senderSpan.classList.add(sender === 'Agent' ? 'user-text' : 'ai-text');
+      senderSpan.textContent = `[${sender}]: `;
+
+      const textSpan = document.createElement('span');
+      textSpan.textContent = text;
+
+      entry.appendChild(senderSpan);
+      entry.appendChild(textSpan);
+      chatBox.appendChild(entry);
+
+      // Scroll chat box to bottom
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
 
     submitBtn.addEventListener('click', async () => {
       const question = questionBox.value.trim();
@@ -101,9 +129,12 @@
         return;
       }
 
+      // Append user question
+      appendMessage('Agent', question);
+
       submitBtn.disabled = true;
-      answerDiv.style.display = 'none';
-      answerDiv.textContent = '';
+      questionBox.value = '';
+      questionBox.disabled = true;
 
       try {
         const response = await fetch('https://script.google.com/macros/s/AKfycbx4KhwAoNfeX-dja32ErJKmTNY6F_q6a_Q5CYPhQ0u_kQlQOJFkP2rGRg-xdBEfLASxrA/exec', {
@@ -115,15 +146,16 @@
         const data = await response.json();
 
         if (data.error) {
-          answerDiv.textContent = '[Snookerbot]: Error - ' + data.error;
+          appendMessage('Snookerbot', 'Error - ' + data.error);
         } else {
-          answerDiv.textContent = '[Snookerbot]: ' + data.answer;
+          appendMessage('Snookerbot', data.answer);
         }
       } catch (err) {
-        answerDiv.textContent = '[Snookerbot]: Network error. Please try again.';
+        appendMessage('Snookerbot', 'Network error. Please try again.');
       } finally {
-        answerDiv.style.display = 'block';
         submitBtn.disabled = false;
+        questionBox.disabled = false;
+        questionBox.focus();
       }
     });
   </script>
