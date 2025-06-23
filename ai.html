@@ -144,7 +144,7 @@
       entry.classList.add('chat-entry');
 
       const senderSpan = document.createElement('span');
-      senderSpan.classList.add(sender === 'Agent' ? 'user-text' : 'ai-text');
+      senderSpan.classList.add(sender === 'Player' ? 'user-text' : 'ai-text');
       senderSpan.textContent = `[${sender}]: `;
 
       const textSpan = document.createElement('span');
