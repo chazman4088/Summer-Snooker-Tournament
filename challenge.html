@@ -293,15 +293,11 @@
         const startOfWeek = new Date(thisWeek);
         startOfWeek.setDate(thisWeek.getDate() - thisWeek.getDay());
 
-        const count = challengeData.filter(c => {
-          if (c.player !== selectedPlayer) return false;
-          const parts = c.date.split('/');
-          const challengeDate = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`);
-          return challengeDate >= startOfWeek;
-        }).length;
+        // Check if the player is already under challenge
+        const challengeCount = challengeData.filter(c => c.player === selectedPlayer).length;
 
-        if (count >= 2) {
-          const confirmProceed = confirm(`${selectedPlayer} has already been challenged twice this week. Do you still want to proceed?`);
+        if (challengeCount > 0) {
+          const confirmProceed = confirm(`${selectedPlayer} has already been challenged. Do you still want to proceed?`);
           if (!confirmProceed) {
             e.preventDefault();
           }
