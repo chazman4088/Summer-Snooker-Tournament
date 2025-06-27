@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Average Points Per Frame</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Average Points Per Frame</h1>
+  </header>
+
+  <div id="chart" style="max-width: 900px; margin: auto; padding: 20px;"></div>
+
+  <script>
+    const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQw8aR1Pkr3bqV9p7_OKcz55dVe2rQhwvgGc0AjNGlBn7oFPND4wTarjt9_N_GfnTVSA1snsieYYJ1o/pub?gid=0&single=true&output=csv";
+
+    function updateChart() {
+      fetch(csvUrl)
+        .then(response => response.text())
+        .then(csv => {
+          const rows = csv.trim().split("\n");
+          const headers = rows[0].split(",");
+          const dataRows = rows.slice(1);
+
+          const stats = {};
+
+          dataRows.forEach(row => {
+            const cols = row.split(",");
+            const p1 = cols[2], f1 = parseInt(cols[3]), pts1 = parseInt(cols[4]);
+            const p2 = cols[5], f2 = parseInt(cols[6]), pts2 = parseInt(cols[7]);
+
+            if (!isNaN(f1) && !isNaN(pts1)) {
+              if (!stats[p1]) stats[p1] = { totalPoints: 0, totalFrames: 0 };
+              stats[p1].totalPoints += pts1;
+              stats[p1].totalFrames += f1;
+            }
+
+            if (!isNaN(f2) && !isNaN(pts2)) {
+              if (!stats[p2]) stats[p2] = { totalPoints: 0, totalFrames: 0 };
+              stats[p2].totalPoints += pts2;
+              stats[p2].totalFrames += f2;
+            }
+          });
+
+          const players = Object.keys(stats);
+          const averages = players.map(p => stats[p].totalFrames === 0 ? 0 : stats[p].totalPoints / stats[p].totalFrames);
+
+          const sorted = players.map((p, i) => ({ player: p, avg: averages[i] }))
+                                .sort((a, b) => b.avg - a.avg);
+
+          const sortedPlayers = sorted.map(x => x.player);
+          const sortedAverages = sorted.map(x => x.avg);
+
+          const data = [{
+            x: sortedPlayers,
+            y: sortedAverages,
+            type: 'bar',
+            text: sortedAverages.map(a => a.toFixed(1)),
+            textposition: 'outside',
+            marker: { color: 'steelblue' }
+          }];
+
+          const layout = {
+            title: 'Average Points Per Frame',
+            yaxis: {
+              title: 'Average Points',
+              rangemode: 'tozero'
+            },
+            margin: { t: 50 }
+          };
+
+          Plotly.newPlot('chart', data, layout);
+        });
+    }
+
+    updateChart();
+    setInterval(updateChart, 30000); // auto-refresh every 30 seconds
+  </script>
+</body>
+</html>
