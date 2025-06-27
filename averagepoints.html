@@ -1,90 +1,85 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Average Points Per Frame</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Snooker Ladder - Avg Points per Frame</title>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    #chart {
+      max-width: 900px;
+      margin: 40px auto;
+    }
+  </style>
 </head>
 <body>
   <header>
-    <h1>Average Points Per Frame</h1>
+    <h1>Average Points per Frame</h1>
   </header>
 
-  <div id="chart" style="max-width: 900px; margin: auto; padding: 20px;"></div>
+  <div id="chart"></div>
 
   <script>
     const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQw8aR1Pkr3bqV9p7_OKcz55dVe2rQhwvgGc0AjNGlBn7oFPND4wTarjt9_N_GfnTVSA1snsieYYJ1o/pub?gid=0&single=true&output=csv";
 
-    async function updateChart() {
-      const response = await fetch(csvUrl);
-      const csv = await response.text();
-      const rows = csv.trim().split('\n');
-      const headers = rows[0].split(',');
-      const dataRows = rows.slice(1);
+    fetch(csvUrl)
+      .then(response => response.text())
+      .then(csv => {
+        const rows = csv.trim().split('\n').slice(1); // Skip header
+        const stats = {};
 
-      const playerStats = {};
+        rows.forEach(row => {
+          const cols = row.split(',');
 
-      const col = name => headers.indexOf(name);
+          const player1 = cols[2].trim();
+          const frames1 = parseInt(cols[3]) || 0;
+          const points1 = parseInt(cols[4]) || 0;
 
-      const p1Index = col("Player 1");
-      const p2Index = col("Player 2");
-      const f1Index = col("Frames 1");
-      const f2Index = col("Frames 2");
-      const pts1Index = col("Points 1");
-      const pts2Index = col("Points 2");
+          const player2 = cols[5].trim();
+          const frames2 = parseInt(cols[6]) || 0;
+          const points2 = parseInt(cols[7]) || 0;
 
-      dataRows.forEach(row => {
-        const cols = row.split(',');
+          if (!stats[player1]) stats[player1] = { points: 0, frames: 0 };
+          stats[player1].points += points1;
+          stats[player1].frames += frames1;
 
-        const player1 = cols[p1Index];
-        const player2 = cols[p2Index];
-        const frames1 = parseInt(cols[f1Index]);
-        const frames2 = parseInt(cols[f2Index]);
-        const points1 = parseInt(cols[pts1Index]);
-        const points2 = parseInt(cols[pts2Index]);
+          if (!stats[player2]) stats[player2] = { points: 0, frames: 0 };
+          stats[player2].points += points2;
+          stats[player2].frames += frames2;
+        });
 
-        if (player1 && !isNaN(frames1) && !isNaN(points1)) {
-          if (!playerStats[player1]) playerStats[player1] = { totalPoints: 0, totalFrames: 0 };
-          playerStats[player1].totalPoints += points1;
-          playerStats[player1].totalFrames += frames1;
-        }
+        const players = Object.keys(stats);
+        const averages = players.map(p => {
+          const { points, frames } = stats[p];
+          return frames > 0 ? (points / frames) : 0;
+        });
 
-        if (player2 && !isNaN(frames2) && !isNaN(points2)) {
-          if (!playerStats[player2]) playerStats[player2] = { totalPoints: 0, totalFrames: 0 };
-          playerStats[player2].totalPoints += points2;
-          playerStats[player2].totalFrames += frames2;
-        }
+        // Sort players by average descending
+        const combined = players.map((p, i) => ({ player: p, avg: averages[i] }));
+        combined.sort((a, b) => b.avg - a.avg);
+
+        const sortedPlayers = combined.map(x => x.player);
+        const sortedAverages = combined.map(x => x.avg);
+
+        const data = [{
+          x: sortedPlayers,
+          y: sortedAverages,
+          type: 'bar',
+          text: sortedAverages.map(r => r.toFixed(1)),
+          textposition: 'outside',
+          marker: { color: '#4CAF50' }
+        }];
+
+        const layout = {
+          title: 'Average Points per Frame',
+          yaxis: {
+            title: 'Points per Frame',
+            range: [0, Math.max(...sortedAverages) + 10]
+          },
+          margin: { t: 60 }
+        };
+
+        Plotly.newPlot('chart', data, layout);
       });
-
-      const players = Object.keys(playerStats);
-      const averages = players.map(p => {
-        const { totalPoints, totalFrames } = playerStats[p];
-        const avg = totalFrames > 0 ? totalPoints / totalFrames : 0;
-        return { player: p, avg };
-      });
-
-      // Sort by average descending
-      averages.sort((a, b) => b.avg - a.avg);
-
-      const x = averages.map(a => a.player);
-      const y = averages.map(a => parseFloat(a.avg.toFixed(2)));
-
-      Plotly.newPlot('chart', [{
-        x,
-        y,
-        type: 'bar',
-        text: y.map(val => val.toFixed(1)),
-        textposition: 'outside',
-        marker: { color: '#2b8cbe' }
-      }], {
-        title: 'Average Points Per Frame',
-        yaxis: { title: 'Points per Frame', range: [0, Math.max(...y) + 10] },
-        margin: { t: 50 }
-      });
-    }
-
-    updateChart();
-    setInterval(updateChart, 30000); // Refresh every 30 seconds
   </script>
 </body>
 </html>
