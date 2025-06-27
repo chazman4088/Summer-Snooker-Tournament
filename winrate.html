@@ -2,22 +2,15 @@
 <html>
 <head>
   <title>Snooker Ladder - Player Win Rates</title>
+  <link rel="stylesheet" href="style.css">
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 20px;
-      background: #f9f9f9;
-    }
-    #chart {
-      max-width: 900px;
-      margin: auto;
-    }
-  </style>
 </head>
 <body>
-  <h2>Snooker Ladder - Player Win Rates</h2>
+  <header>
+    <h1>Elm Park Snooker Club</h1>
+  </header>
+
+  <h2>Player Win Rates</h2>
   <div id="chart"></div>
 
   <script>
@@ -49,7 +42,6 @@
           winRates.push(winRate);
         });
 
-        // Sort players by win rate descending
         const sorted = players.map((p, i) => ({ player: p, rate: winRates[i] }))
                               .sort((a, b) => b.rate - a.rate);
 
