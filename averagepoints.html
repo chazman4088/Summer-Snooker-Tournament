@@ -17,65 +17,58 @@
 
     function updateChart() {
       fetch(csvUrl)
-        .then(response => response.text())
+        .then(r => r.text())
         .then(csv => {
-          const rows = csv.trim().split("\n");
-          const headers = rows[0].split(",");
+          const rows = csv.trim().split('\n');
+          const header = rows[0].split(',');
           const dataRows = rows.slice(1);
+          const idx = name => header.indexOf(name);
 
           const stats = {};
 
-          dataRows.forEach(row => {
-            const cols = row.split(",");
-            const p1 = cols[2], f1 = parseInt(cols[3]), pts1 = parseInt(cols[4]);
-            const p2 = cols[5], f2 = parseInt(cols[6]), pts2 = parseInt(cols[7]);
+          dataRows.forEach(r => {
+            const c = r.split(',');
+            const p1 = c[idx('Player 1')], f1 = parseInt(c[idx('Frames 1')]), pts1 = parseInt(c[idx('Points 1')]);
+            const p2 = c[idx('Player 2')], f2 = parseInt(c[idx('Frames 2')]), pts2 = parseInt(c[idx('Points 2')]);
 
-            if (!isNaN(f1) && !isNaN(pts1)) {
-              if (!stats[p1]) stats[p1] = { totalPoints: 0, totalFrames: 0 };
-              stats[p1].totalPoints += pts1;
-              stats[p1].totalFrames += f1;
+            if (p1 && !isNaN(f1) && !isNaN(pts1)) {
+              stats[p1] = stats[p1] || {frames:0, points:0};
+              stats[p1].frames += f1;
+              stats[p1].points += pts1;
             }
-
-            if (!isNaN(f2) && !isNaN(pts2)) {
-              if (!stats[p2]) stats[p2] = { totalPoints: 0, totalFrames: 0 };
-              stats[p2].totalPoints += pts2;
-              stats[p2].totalFrames += f2;
+            if (p2 && !isNaN(f2) && !isNaN(pts2)) {
+              stats[p2] = stats[p2] || {frames:0, points:0};
+              stats[p2].frames += f2;
+              stats[p2].points += pts2;
             }
           });
 
           const players = Object.keys(stats);
-          const averages = players.map(p => stats[p].totalFrames === 0 ? 0 : stats[p].totalPoints / stats[p].totalFrames);
+          const avgs = players.map(p => stats[p].frames === 0 ? 0 : stats[p].points / stats[p].frames);
 
-          const sorted = players.map((p, i) => ({ player: p, avg: averages[i] }))
-                                .sort((a, b) => b.avg - a.avg);
+          const sorted = players.map((p,i) => ({player:p,avg:avgs[i]}))
+                                .sort((a,b) => b.avg - a.avg);
 
-          const sortedPlayers = sorted.map(x => x.player);
-          const sortedAverages = sorted.map(x => x.avg);
+          const sortedP = sorted.map(x => x.player);
+          const sortedA = sorted.map(x => x.avg);
 
-          const data = [{
-            x: sortedPlayers,
-            y: sortedAverages,
+          Plotly.newPlot('chart', [{
+            x: sortedP,
+            y: sortedA,
             type: 'bar',
-            text: sortedAverages.map(a => a.toFixed(1)),
+            text: sortedA.map(a => a.toFixed(1)),
             textposition: 'outside',
-            marker: { color: 'steelblue' }
-          }];
-
-          const layout = {
+            marker: {color: '#4CAF50'}
+          }], {
             title: 'Average Points Per Frame',
-            yaxis: {
-              title: 'Average Points',
-              rangemode: 'tozero'
-            },
-            margin: { t: 50 }
-          };
-
-          Plotly.newPlot('chart', data, layout);
+            yaxis:{title:'Pts per Frame', rangemode:'tozero'},
+            margin:{t:50}
+          });
         });
     }
 
     updateChart();
-    setInterval(updateChart, 30000); // auto-refresh every 30 seconds
+    setInterval(updateChart, 30000); // refresh every 30s
   </script>
 </body>
 </html>
