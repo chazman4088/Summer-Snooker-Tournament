@@ -24,10 +24,13 @@
     fetch(csvUrl)
       .then(response => response.text())
       .then(csv => {
-        const rows = csv.trim().split('\n').slice(1); // Skip header
+        const rows = csv.trim().split('\n');
+        const header = rows[0].split(',');
+        const dataRows = rows.slice(1);
+
         const stats = {};
 
-        rows.forEach(row => {
+        dataRows.forEach(row => {
           const cols = row.split(',');
 
           const player1 = cols[2].trim();
@@ -38,13 +41,15 @@
           const frames2 = parseInt(cols[6]) || 0;
           const points2 = parseInt(cols[7]) || 0;
 
+          const totalFramesThisMatch = frames1 + frames2;
+
           if (!stats[player1]) stats[player1] = { points: 0, frames: 0 };
           stats[player1].points += points1;
-          stats[player1].frames += frames1;
+          stats[player1].frames += totalFramesThisMatch;
 
           if (!stats[player2]) stats[player2] = { points: 0, frames: 0 };
           stats[player2].points += points2;
-          stats[player2].frames += frames2;
+          stats[player2].frames += totalFramesThisMatch;
         });
 
         const players = Object.keys(stats);
