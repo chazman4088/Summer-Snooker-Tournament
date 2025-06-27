@@ -1,182 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Elm Park Snooker Club - Dashboard</title>
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <title>Dashboard - Elm Park Snooker Club</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      text-align: center;
+      padding: 50px;
+    }
+    h1 {
+      margin-bottom: 40px;
+    }
+    .btn {
+      display: inline-block;
+      padding: 14px 28px;
+      font-size: 18px;
+      background-color: #2e8b57;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
+    }
+    .btn:hover {
+      background-color: #246b44;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>Elm Park Snooker Club - Dashboard</h1>
-    <nav>
-      <a href="index.html" class="btn">Back to Home</a>
-    </nav>
-  </header>
-
-  <main>
-    <h2>Player Stats</h2>
-
-    <div class="charts">
-      <div class="chart-container">
-        <canvas id="winRateChart"></canvas>
-      </div>
-      <div class="chart-container">
-        <canvas id="pointsConcededChart"></canvas>
-      </div>
-      <div class="chart-container">
-        <canvas id="pointsScoredChart"></canvas>
-      </div>
-      <div class="chart-container">
-        <canvas id="matchesPlayedChart"></canvas>
-      </div>
-    </div>
-
-    <h3>Total Matches Played</h3>
-    <div id="totalMatchesPlayed"></div>
-  </main>
-
-  <script>
-    // Fetching player stats from Google Sheets using the doGet function
-    const fetchPlayerStats = async () => {
-      const url = "https://script.google.com/macros/s/AKfycbxc4Vlz3A7soUakV8gX_Bw4Z7RRfjBZpwhiOkLAUYhY9Ef8s_lQvuWCBAaSIbSZ7pNSWw/exec";
-      const response = await fetch(url);
-      const data = await response.json();
-
-      return data;
-    };
-
-    // Process player data to calculate required stats
-    const processData = (players) => {
-      const playerStats = players.map(player => {
-        const totalMatches = player.wins + player.losses;
-        const winRate = (totalMatches === 0) ? 0 : (player.wins / totalMatches) * 100;
-        const avgPointsConceded = totalMatches === 0 ? 0 : (player.losses / totalMatches); // Approximation for average points conceded per frame
-        const avgPointsScored = totalMatches === 0 ? 0 : (player.wins / totalMatches); // Approximation for average points scored per frame
-
-        return {
-          name: player.name,
-          winRate,
-          avgPointsConceded,
-          avgPointsScored,
-          totalMatches
-        };
-      });
-
-      return playerStats;
-    };
-
-    // Render the charts
-    const renderCharts = (playerStats) => {
-      const labels = playerStats.map(player => player.name);
-
-      // Win Rate Chart
-      const winRateData = playerStats.map(player => player.winRate);
-      const winRateChart = new Chart(document.getElementById("winRateChart"), {
-        type: "bar",
-        data: {
-          labels: labels,
-          datasets: [{
-            label: "Player Win Rate",
-            data: winRateData,
-            backgroundColor: "rgba(75, 192, 192, 0.2)",
-            borderColor: "rgba(75, 192, 192, 1)",
-            borderWidth: 1
-          }]
-        },
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true
-            }
-          }
-        }
-      });
-
-      // Points Conceded Chart
-      const pointsConcededData = playerStats.map(player => player.avgPointsConceded);
-      const pointsConcededChart = new Chart(document.getElementById("pointsConcededChart"), {
-        type: "bar",
-        data: {
-          labels: labels,
-          datasets: [{
-            label: "Player Average Points Conceded Per Frame",
-            data: pointsConcededData,
-            backgroundColor: "rgba(255, 159, 64, 0.2)",
-            borderColor: "rgba(255, 159, 64, 1)",
-            borderWidth: 1
-          }]
-        },
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true
-            }
-          }
-        }
-      });
-
-      // Points Scored Chart
-      const pointsScoredData = playerStats.map(player => player.avgPointsScored);
-      const pointsScoredChart = new Chart(document.getElementById("pointsScoredChart"), {
-        type: "bar",
-        data: {
-          labels: labels,
-          datasets: [{
-            label: "Player Average Points Scored Per Frame",
-            data: pointsScoredData,
-            backgroundColor: "rgba(153, 102, 255, 0.2)",
-            borderColor: "rgba(153, 102, 255, 1)",
-            borderWidth: 1
-          }]
-        },
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true
-            }
-          }
-        }
-      });
-
-      // Matches Played Chart
-      const matchesPlayedData = playerStats.map(player => player.totalMatches);
-      const matchesPlayedChart = new Chart(document.getElementById("matchesPlayedChart"), {
-        type: "bar",
-        data: {
-          labels: labels,
-          datasets: [{
-            label: "Player Total Matches Played",
-            data: matchesPlayedData,
-            backgroundColor: "rgba(255, 99, 132, 0.2)",
-            borderColor: "rgba(255, 99, 132, 1)",
-            borderWidth: 1
-          }]
-        },
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true
-            }
-          }
-        }
-      });
-
-      // Display total matches played
-      const totalMatchesPlayed = playerStats.reduce((total, player) => total + player.totalMatches, 0);
-      document.getElementById("totalMatchesPlayed").innerText = `Total Matches Played: ${totalMatchesPlayed}`;
-    };
-
-    // Fetch and render player stats and charts
-    const init = async () => {
-      const playersData = await fetchPlayerStats();
-      const playerStats = processData(playersData);
-      renderCharts(playerStats);
-    };
-
-    // Call the init function
-    init();
-  </script>
+  <h1>Elm Park Snooker Club Dashboard</h1>
+  <a href="winrate.html" class="btn">Winrate</a>
 </body>
 </html>
