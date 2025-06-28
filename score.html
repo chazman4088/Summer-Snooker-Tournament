@@ -96,6 +96,12 @@
     .back-home a:hover {
       text-decoration: underline;
     }
+    #statusMessage {
+      margin-top: 1rem;
+      font-size: 1.1rem;
+      font-weight: bold;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
@@ -180,6 +186,8 @@
 
       <button type="submit">Submit Score</button>
 
+      <p id="statusMessage"></p>
+
       <div class="back-home">
         <a href="index.html">← Back to Home</a>
       </div>
@@ -193,16 +201,32 @@
       const formData = new FormData(form);
       const url = "https://script.google.com/macros/s/AKfycbxc4Vlz3A7soUakV8gX_Bw4Z7RRfjBZpwhiOkLAUYhY9Ef8s_lQvuWCBAaSIbSZ7pNSWw/exec";
 
+      const status = document.getElementById('statusMessage');
+      const submitBtn = form.querySelector("button[type='submit']");
+      submitBtn.disabled = true;
+      status.style.color = "white";
+      status.textContent = "Submitting...";
+
       fetch(url, {
         method: 'POST',
         body: formData
       })
       .then(response => response.text())
       .then(text => {
-        window.location.href = 'result.html?status=' + encodeURIComponent(text);
+        if (text.toLowerCase().includes("success")) {
+          status.style.color = "lightgreen";
+          status.textContent = "✅ Score submitted successfully!";
+          form.reset();
+        } else {
+          throw new Error(text);
+        }
       })
-      .catch(() => {
-        window.location.href = 'result.html?status=' + encodeURIComponent('Error: Could not submit score.');
+      .catch(err => {
+        status.style.color = "red";
+        status.textContent = "❌ Error submitting score: " + err.message;
+      })
+      .finally(() => {
+        submitBtn.disabled = false;
       });
     });
   </script>
