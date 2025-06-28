@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Snooker Ladder - Avg Points Conceded per Frame</title>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    #chart {
+      max-width: 900px;
+      margin: 40px auto;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Average Points Conceded per Frame</h1>
+  </header>
+
+  <div id="chart"></div>
+
+  <script>
+    const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQw8aR1Pkr3bqV9p7_OKcz55dVe2rQhwvgGc0AjNGlBn7oFPND4wTarjt9_N_GfnTVSA1snsieYYJ1o/pub?gid=0&single=true&output=csv";
+
+    fetch(csvUrl)
+      .then(response => response.text())
+      .then(csv => {
+        const rows = csv.trim().split('\n');
+        const header = rows[0].split(',');
+        const dataRows = rows.slice(1);
+
+        const stats = {};
+
+        dataRows.forEach(row => {
+          const cols = row.split(',');
+
+          const player1 = cols[2].trim();
+          const frames1 = parseInt(cols[3]) || 0;
+          const points1 = parseInt(cols[4]) || 0;
+
+          const player2 = cols[5].trim();
+          const frames2 = parseInt(cols[6]) || 0;
+          const points2 = parseInt(cols[7]) || 0;
+
+          const totalFrames = frames1 + frames2;
+
+          // Initialize players
+          if (!stats[player1]) stats[player1] = { conceded: 0, frames: 0 };
+          if (!stats[player2]) stats[player2] = { conceded: 0, frames: 0 };
+
+          // Add conceded points and frames
+          stats[player1].conceded += points2;
+          stats[player1].frames += totalFrames;
+
+          stats[player2].conceded += points1;
+          stats[player2].frames += totalFrames;
+        });
+
+        const players = Object.keys(stats);
+        const averages = players.map(p => {
+          const { conceded, frames } = stats[p];
+          return frames > 0 ? (conceded / frames) : 0;
+        });
+
+        // Sort players by average descending
+        const combined = players.map((p, i) => ({ player: p, avg: averages[i] }));
+        combined.sort((a, b) => b.avg - a.avg);
+
+        const sortedPlayers = combined.map(x => x.player);
+        const sortedAverages = combined.map(x => x.avg);
+
+        const data = [{
+          x: sortedPlayers,
+          y: sortedAverages,
+          type: 'bar',
+          text: sortedAverages.map(a => a.toFixed(1)),
+          textposition: 'outside',
+          marker: { color: '#f44336' } // red color for "conceded"
+        }];
+
+        const layout = {
+          title: 'Average Points Conceded per Frame',
+          yaxis: {
+            title: 'Points Conceded per Frame',
+            range: [0, Math.max(...sortedAverages) + 10]
+          },
+          margin: { t: 60 }
+        };
+
+        Plotly.newPlot('chart', data, layout);
+      });
+  </script>
+</body>
+</html>
