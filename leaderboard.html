@@ -79,7 +79,7 @@
       tbody.innerHTML = players.map((p, i) => `
         <tr>
           <td>${i + 1}</td>
-          <td>${p.name}</td>
+          <td><a href="player.html?name=${encodeURIComponent(p.name)}" style="color:#4CAF50; text-decoration:none;">${p.name}</a></td>
           <td>${p.wins}</td>
           <td>${p.losses}</td>
           <td>${p.handicap}</td>
