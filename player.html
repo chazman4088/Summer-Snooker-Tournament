@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Player Profile</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #111;
+      color: white;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    .profile-box {
+      background-color: #1a1a1a;
+      padding: 20px;
+      border-radius: 8px;
+      display: inline-block;
+      text-align: left;
+      max-width: 400px;
+      margin-top: 30px;
+    }
+    .back-btn {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+    }
+    .back-btn:hover {
+      background-color: #45a049;
+    }
+    h2 {
+      margin-top: 0;
+    }
+    .loading {
+      margin-top: 50px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Player Profile</h1>
+  <div id="profile" class="loading">Loading...</div>
+  <a href="leaderboard.html" class="back-btn">Back to Ladder</a>
+
+  <script>
+    function getPlayerNameFromURL() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('name');
+    }
+
+    function showPlayer(player) {
+      const container = document.getElementById('profile');
+
+      if (!player || !player.name) {
+        container.innerHTML = '<p>Player not found.</p>';
+        return;
+      }
+
+      container.classList.remove('loading');
+      container.innerHTML = `
+        <div class="profile-box">
+          <h2>${player.name}</h2>
+          <p><strong>Wins:</strong> ${player.wins}</p>
+          <p><strong>Losses:</strong> ${player.losses}</p>
+          <p><strong>Handicap:</strong> ${player.handicap}</p>
+          <p><strong>Points:</strong> ${player.points}</p>
+        </div>
+      `;
+    }
+
+    function loadPlayer() {
+      const name = getPlayerNameFromURL();
+      if (!name) {
+        document.getElementById('profile').innerHTML = '<p>Invalid player name.</p>';
+        return;
+      }
+
+      const script = document.createElement('script');
+      script.src = `https://script.google.com/macros/s/AKfycbxc4Vlz3A7soUakV8gX_Bw4Z7RRfjBZpwhiOkLAUYhY9Ef8s_lQvuWCBAaSIbSZ7pNSWw/exec?player=${encodeURIComponent(name)}&callback=showPlayer`;
+      document.body.appendChild(script);
+    }
+
+    window.onload = loadPlayer;
+  </script>
+</body>
+</html>
