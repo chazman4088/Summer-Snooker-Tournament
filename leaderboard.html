@@ -100,6 +100,7 @@
   <div id="playerModal">
     <div class="modal-content">
       <h2 id="modalName"></h2>
+      <p id="loadingText" style="margin:0 0 10px;">Loading player data...</p>
       <p>Win rate: <span id="modalWinRate"></span>%</p>
       <p>Avg pts/frame: <span id="modalAvg"></span></p>
       <p>XP: <span id="modalXP"></span></p>
@@ -108,7 +109,6 @@
   </div>
 
   <script>
-    // your exec URL
     const API = 'https://script.google.com/macros/s/AKfycbxc4Vlz3A7soUakV8gX_Bw4Z7RRfjBZpwhiOkLAUYhY9Ef8s_lQvuWCBAaSIbSZ7pNSWw/exec';
 
     function showLeaderboard(players) {
@@ -133,20 +133,25 @@
       document.querySelectorAll('.playerName').forEach(td => {
         td.addEventListener('click', () => {
           const name = td.dataset.name;
+          // show loading state
+          document.getElementById('modalName').textContent = name;
+          document.getElementById('loadingText').textContent = 'Loading player data...';
+          document.getElementById('modalWinRate').textContent = '';
+          document.getElementById('modalAvg').textContent = '';
+          document.getElementById('modalXP').textContent = '';
+          document.getElementById('playerModal').style.display = 'flex';
+
           fetch(`${API}?player=${encodeURIComponent(name)}`)
             .then(r => r.json())
-            .then(showPlayerModal)
+            .then(stats => {
+              document.getElementById('loadingText').textContent = '';
+              document.getElementById('modalWinRate').textContent = (stats.winRate * 100).toFixed(1);
+              document.getElementById('modalAvg').textContent = stats.avgPointsPerFrame.toFixed(1);
+              document.getElementById('modalXP').textContent = stats.xp;
+            })
             .catch(console.error);
         });
       });
-    }
-
-    function showPlayerModal(stats) {
-      document.getElementById('modalName').textContent    = stats.player;
-      document.getElementById('modalWinRate').textContent = (stats.winRate * 100).toFixed(1);
-      document.getElementById('modalAvg').textContent     = stats.avgPointsPerFrame.toFixed(1);
-      document.getElementById('modalXP').textContent      = stats.xp;
-      document.getElementById('playerModal').style.display = 'flex';
     }
 
     function closeModal() {
