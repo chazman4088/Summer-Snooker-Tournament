@@ -27,7 +27,7 @@
       border-bottom: 1px solid #444;
     }
     th {
-      background-color: #4CAF50;  /* Green */
+      background-color: #4CAF50;
       font-size: 18px;
     }
     td {
@@ -48,10 +48,36 @@
     .back-btn:hover {
       background-color: #45a049;
     }
+    /* modal */
+    #playerModal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.7);
+      align-items: center;
+      justify-content: center;
+    }
+    #playerModal .modal-content {
+      background: #222;
+      padding: 20px;
+      border-radius: 8px;
+      min-width: 280px;
+      color: white;
+      text-align: left;
+    }
+    #playerModal button {
+      margin-top: 10px;
+      padding: 6px 12px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+    }
   </style>
 </head>
 <body>
   <h1>Summer Snooker Ladder</h1>
+
   <table id="leaderboard">
     <thead>
       <tr>
@@ -60,36 +86,76 @@
         <th>Wins</th>
         <th>Losses</th>
         <th>Handicap</th>
+        <th>XP</th>
       </tr>
     </thead>
     <tbody>
-      <tr><td colspan="5">Loading...</td></tr>
+      <tr><td colspan="6">Loading...</td></tr>
     </tbody>
   </table>
+
   <a href="index.html" class="back-btn">Back to Home</a>
 
+  <!-- Player Info Modal -->
+  <div id="playerModal">
+    <div class="modal-content">
+      <h2 id="modalName"></h2>
+      <p>Win rate: <span id="modalWinRate"></span>%</p>
+      <p>Avg pts/frame: <span id="modalAvg"></span></p>
+      <p>XP: <span id="modalXP"></span></p>
+      <button onclick="closeModal()">Close</button>
+    </div>
+  </div>
+
   <script>
+    // your exec URL
+    const API = 'https://script.google.com/macros/s/AKfycbxc4Vlz3A7soUakV8gX_Bw4Z7RRfjBZpwhiOkLAUYhY9Ef8s_lQvuWCBAaSIbSZ7pNSWw/exec';
+
     function showLeaderboard(players) {
       const tbody = document.querySelector('#leaderboard tbody');
       if (!players || players.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5">No data available</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="6">No data available</td></tr>';
         return;
       }
-
       tbody.innerHTML = players.map((p, i) => `
         <tr>
           <td>${i + 1}</td>
-          <td>${p.name}</td>
+          <td class="playerName" data-name="${p.name}" style="cursor:pointer; color:#4CAF50;">
+            ${p.name}
+          </td>
           <td>${p.wins}</td>
           <td>${p.losses}</td>
           <td>${p.handicap}</td>
+          <td>${p.xp}</td>
         </tr>
       `).join('');
+
+      document.querySelectorAll('.playerName').forEach(td => {
+        td.addEventListener('click', () => {
+          const name = td.dataset.name;
+          fetch(`${API}?player=${encodeURIComponent(name)}`)
+            .then(r => r.json())
+            .then(showPlayerModal)
+            .catch(console.error);
+        });
+      });
+    }
+
+    function showPlayerModal(stats) {
+      document.getElementById('modalName').textContent    = stats.player;
+      document.getElementById('modalWinRate').textContent = (stats.winRate * 100).toFixed(1);
+      document.getElementById('modalAvg').textContent     = stats.avgPointsPerFrame.toFixed(1);
+      document.getElementById('modalXP').textContent      = stats.xp;
+      document.getElementById('playerModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('playerModal').style.display = 'none';
     }
 
     function loadLeaderboard() {
       const script = document.createElement('script');
-      script.src = 'https://script.google.com/macros/s/AKfycbxc4Vlz3A7soUakV8gX_Bw4Z7RRfjBZpwhiOkLAUYhY9Ef8s_lQvuWCBAaSIbSZ7pNSWw/exec?callback=showLeaderboard';
+      script.src = API + '?callback=showLeaderboard';
       document.body.appendChild(script);
     }
 
