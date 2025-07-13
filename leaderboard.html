@@ -73,6 +73,20 @@
       border: none;
       border-radius: 4px;
     }
+    /* XP bar */
+    .xp-bar {
+      background: #444;
+      border-radius: 4px;
+      overflow: hidden;
+      height: 16px;
+      margin: 4px 0 10px;
+    }
+    .xp-fill {
+      background: #4CAF50;
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
   </style>
 </head>
 <body>
@@ -103,23 +117,34 @@
       <p id="loadingText" style="margin:0 0 10px;">Loading player data...</p>
       <p>Win rate: <span id="modalWinRate"></span>%</p>
       <p>Avg pts/frame: <span id="modalAvg"></span></p>
-      <p>XP: <span id="modalXP"></span></p>
+      <p>XP:</p>
+      <div class="xp-bar"><div id="modalXPBar" class="xp-fill"></div></div>
+      <p id="modalXPText"></p>
       <button onclick="closeModal()">Close</button>
     </div>
   </div>
 
   <script>
     const API = 'https://script.google.com/macros/s/AKfycbxc4Vlz3A7soUakV8gX_Bw4Z7RRfjBZpwhiOkLAUYhY9Ef8s_lQvuWCBAaSIbSZ7pNSWw/exec';
+    
+    // XP thresholds per level: level1=50,2=100,3=150,...
+    function getLevelInfo(xp) {
+      const level = Math.floor(xp/50) + 1;
+      const prevReq = 50*(level-1);
+      const nextReq = 50*level;
+      const progress = ((xp - prevReq) / (nextReq - prevReq)) * 100;
+      return { level, progress };
+    }
 
     function showLeaderboard(players) {
       const tbody = document.querySelector('#leaderboard tbody');
-      if (!players || players.length === 0) {
+      if (!players || !players.length) {
         tbody.innerHTML = '<tr><td colspan="6">No data available</td></tr>';
         return;
       }
-      tbody.innerHTML = players.map((p, i) => `
+      tbody.innerHTML = players.map((p,i) => `
         <tr>
-          <td>${i + 1}</td>
+          <td>${i+1}</td>
           <td class="playerName" data-name="${p.name}" style="cursor:pointer; color:#4CAF50;">
             ${p.name}
           </td>
@@ -129,28 +154,30 @@
           <td>${p.xp}</td>
         </tr>
       `).join('');
-
       document.querySelectorAll('.playerName').forEach(td => {
-        td.addEventListener('click', () => {
+        td.onclick = () => {
           const name = td.dataset.name;
-          // show loading state
           document.getElementById('modalName').textContent = name;
           document.getElementById('loadingText').textContent = 'Loading player data...';
           document.getElementById('modalWinRate').textContent = '';
           document.getElementById('modalAvg').textContent = '';
-          document.getElementById('modalXP').textContent = '';
+          document.getElementById('modalXPText').textContent = '';
+          document.getElementById('modalXPBar').style.width = '0%';
           document.getElementById('playerModal').style.display = 'flex';
 
           fetch(`${API}?player=${encodeURIComponent(name)}`)
             .then(r => r.json())
             .then(stats => {
               document.getElementById('loadingText').textContent = '';
-              document.getElementById('modalWinRate').textContent = (stats.winRate * 100).toFixed(1);
+              document.getElementById('modalWinRate').textContent = (stats.winRate*100).toFixed(1);
               document.getElementById('modalAvg').textContent = stats.avgPointsPerFrame.toFixed(1);
-              document.getElementById('modalXP').textContent = stats.xp;
+              const { level, progress } = getLevelInfo(stats.xp);
+              document.getElementById('modalXPBar').style.width = progress + '%';
+              document.getElementById('modalXPText').textContent = 
+                `Lvl ${level} (${stats.xp} XP)`;
             })
             .catch(console.error);
-        });
+        };
       });
     }
 
@@ -160,7 +187,7 @@
 
     function loadLeaderboard() {
       const script = document.createElement('script');
-      script.src = API + '?callback=showLeaderboard';
+      script.src = API+'?callback=showLeaderboard';
       document.body.appendChild(script);
     }
 
