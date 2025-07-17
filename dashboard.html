@@ -3,6 +3,14 @@
 <head>
   <title>Dashboard - Elm Park Snooker Club</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* remove default white gap and match the page background */
+    html, body {
+      margin: 0;
+      padding: 0;
+      background-color: #111;
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -20,7 +28,7 @@
   </div>
 
   <!-- Embedded Looker Studio chart -->
-  <div style="max-width:800px; margin: 20px auto;">
+  <div style="max-width:800px; margin: 20px auto 0;">
     <iframe
       width="100%"
       height="600"
