@@ -1,8 +1,62 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Snooker Ladder - Player Win Rates</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Snooker Ladder – Player Win Rates</title>
+  <style>
+    :root {
+      --page-bg:         #112216;
+      --text-color:      #B2935C;
+      --font-stack:      'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      --heading-size:    2.5rem;
+      --subheading-size: 1.5rem;
+      --content-max:     800px;
+    }
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background-color: var(--page-bg);
+      color: var(--text-color);
+      font-family: var(--font-stack);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    header {
+      width: 100%;
+      padding: 20px 0;
+      text-align: center;
+      background-color: var(--page-bg);
+    }
+    header h1 {
+      font-size: var(--heading-size);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-color);
+    }
+    main {
+      flex: 1;
+      width: 100%;
+      max-width: var(--content-max);
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    h2 {
+      font-size: var(--subheading-size);
+      margin-bottom: 20px;
+      text-align: center;
+      color: var(--text-color);
+    }
+    #chart {
+      width: 100%;
+      height: auto;
+    }
+  </style>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
@@ -10,11 +64,85 @@
     <h1>Elm Park Snooker Club</h1>
   </header>
 
-  <h2>Player Win Rates</h2>
-  <div id="chart"></div>
+  <main>
+    <h2>Player Win Rates</h2>
+    <div id="chart"></div>
+  </main>
 
   <script>
-    const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQw8aR1Pkr3bqV9p7_OKcz55dVe2rQhwvgGc0AjNGlBn7oFPND4wTarjt9_N_GfnTVSA1snsieYYJ1o/pub?gid=586139893&single=true&output=csv";
+    const csvUrl = "<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Snooker Ladder – Player Win Rates</title>
+  <style>
+    :root {
+      --page-bg:         #112216;
+      --text-color:      #B2935C;
+      --font-stack:      'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      --heading-size:    2.5rem;
+      --subheading-size: 1.5rem;
+      --content-max:     800px;
+    }
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background-color: var(--page-bg);
+      color: var(--text-color);
+      font-family: var(--font-stack);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    header {
+      width: 100%;
+      padding: 20px 0;
+      text-align: center;
+      background-color: var(--page-bg);
+    }
+    header h1 {
+      font-size: var(--heading-size);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-color);
+    }
+    main {
+      flex: 1;
+      width: 100%;
+      max-width: var(--content-max);
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    h2 {
+      font-size: var(--subheading-size);
+      margin-bottom: 20px;
+      text-align: center;
+      color: var(--text-color);
+    }
+    #chart {
+      width: 100%;
+      height: auto;
+    }
+  </style>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Elm Park Snooker Club</h1>
+  </header>
+
+  <main>
+    <h2>Player Win Rates</h2>
+    <div id="chart"></div>
+  </main>
+
+  <script>
+    const csvUrl = "Enter CSV File link here";
 
     fetch(csvUrl)
       .then(response => response.text())
@@ -24,29 +152,30 @@
         const dataRows = rows.slice(1);
 
         const playerIndex = header.indexOf('Player');
-        const winsIndex = header.indexOf('Wins');
+        const winsIndex   = header.indexOf('Wins');
         const lossesIndex = header.indexOf('Losses');
 
         const players = [];
         const winRates = [];
 
         dataRows.forEach(row => {
-          const cols = row.split(',');
-          const player = cols[playerIndex];
-          const wins = parseInt(cols[winsIndex]);
-          const losses = parseInt(cols[lossesIndex]);
+          const cols    = row.split(',');
+          const player  = cols[playerIndex];
+          const wins    = parseInt(cols[winsIndex], 10);
+          const losses  = parseInt(cols[lossesIndex], 10);
           const matches = wins + losses;
-          const winRate = matches === 0 ? 0 : (wins / matches) * 100;
+          const rate    = matches === 0 ? 0 : (wins / matches) * 100;
 
           players.push(player);
-          winRates.push(winRate);
+          winRates.push(rate);
         });
 
-        const sorted = players.map((p, i) => ({ player: p, rate: winRates[i] }))
-                              .sort((a, b) => b.rate - a.rate);
+        const sorted = players
+          .map((p, i) => ({ player: p, rate: winRates[i] }))
+          .sort((a, b) => b.rate - a.rate);
 
         const sortedPlayers = sorted.map(x => x.player);
-        const sortedRates = sorted.map(x => x.rate);
+        const sortedRates   = sorted.map(x => x.rate);
 
         const data = [{
           x: sortedPlayers,
@@ -58,15 +187,94 @@
         }];
 
         const layout = {
-          title: 'Player Win Rates',
+          title: { text: 'Player Win Rates', font: { color: var(--text-color) } },
           yaxis: {
             range: [0, 100],
-            title: 'Win Rate (%)'
+            title: { text: 'Win Rate (%)', font: { color: var(--text-color) } },
+            tickfont: { color: var(--text-color) }
           },
-          margin: { t: 50 }
+          xaxis: {
+            tickfont: { color: var(--text-color) }
+          },
+          plot_bgcolor: var(--page-bg),
+          paper_bgcolor: var(--page-bg),
+          font: { color: var(--text-color) },
+          margin: { t: 60 }
         };
 
-        Plotly.newPlot('chart', data, layout);
+        Plotly.newPlot('chart', data, layout, {responsive: true});
+      })
+      .catch(err => {
+        document.getElementById('chart').textContent = 'Error loading chart data.';
+        console.error(err);
+      });
+  </script>
+</body>
+</html>";
+
+    fetch(csvUrl)
+      .then(response => response.text())
+      .then(csv => {
+        const rows = csv.trim().split('\n');
+        const header = rows[0].split(',');
+        const dataRows = rows.slice(1);
+
+        const playerIndex = header.indexOf('Player');
+        const winsIndex   = header.indexOf('Wins');
+        const lossesIndex = header.indexOf('Losses');
+
+        const players = [];
+        const winRates = [];
+
+        dataRows.forEach(row => {
+          const cols    = row.split(',');
+          const player  = cols[playerIndex];
+          const wins    = parseInt(cols[winsIndex], 10);
+          const losses  = parseInt(cols[lossesIndex], 10);
+          const matches = wins + losses;
+          const rate    = matches === 0 ? 0 : (wins / matches) * 100;
+
+          players.push(player);
+          winRates.push(rate);
+        });
+
+        const sorted = players
+          .map((p, i) => ({ player: p, rate: winRates[i] }))
+          .sort((a, b) => b.rate - a.rate);
+
+        const sortedPlayers = sorted.map(x => x.player);
+        const sortedRates   = sorted.map(x => x.rate);
+
+        const data = [{
+          x: sortedPlayers,
+          y: sortedRates,
+          type: 'bar',
+          text: sortedRates.map(r => r.toFixed(1) + '%'),
+          textposition: 'outside',
+          marker: { color: 'seagreen' }
+        }];
+
+        const layout = {
+          title: { text: 'Player Win Rates', font: { color: var(--text-color) } },
+          yaxis: {
+            range: [0, 100],
+            title: { text: 'Win Rate (%)', font: { color: var(--text-color) } },
+            tickfont: { color: var(--text-color) }
+          },
+          xaxis: {
+            tickfont: { color: var(--text-color) }
+          },
+          plot_bgcolor: var(--page-bg),
+          paper_bgcolor: var(--page-bg),
+          font: { color: var(--text-color) },
+          margin: { t: 60 }
+        };
+
+        Plotly.newPlot('chart', data, layout, {responsive: true});
+      })
+      .catch(err => {
+        document.getElementById('chart').textContent = 'Error loading chart data.';
+        console.error(err);
       });
   </script>
 </body>
