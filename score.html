@@ -3,46 +3,53 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Submit Snooker Score - Elm Park Snooker Club</title>
-
-  <!-- Google Font for consistency with the homepage -->
-  <link
-    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap"
-    rel="stylesheet"
-  />
+  <title>Elm Park Snooker Club – Submit Score</title>
 
   <style>
-    /* Base reset & body */
-    * {
+    :root {
+      --page-bg:        #112216;    /* deep green background */
+      --card-bg:        #112211;    /* slightly lighter card background */
+      --card-border:    #A8863A;    /* warm gold border */
+      --btn-bg:         #000000;    /* black button background */
+      --btn-text:       #B2935C;    /* warm gold text */
+      --btn-bg-hover:   #333333;    /* charcoal hover state */
+      --btn-padding:    12px 24px;
+      --btn-radius:     20px;       /* pill shape */
+      --font-stack:     'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      --input-bg:       #000000;    /* black input background */
+      --input-radius:   20px;       /* pill shape for inputs */
+    }
+
+    *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
+
     body {
+      font-family: var(--font-stack);
+      background-color: var(--page-bg);
+      color: var(--btn-text);
       display: flex;
       flex-direction: column;
       min-height: 100vh;
-      background-color: #0D1C0E;
-      color: #ffffff;
-      font-family: 'Montserrat', sans-serif;
       line-height: 1.6;
     }
 
-    /* Header */
     header {
       text-align: center;
       padding: 30px 1rem;
-      border-bottom: 2px solid #A8863A;
+      border-bottom: 2px solid var(--card-border);
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     }
+
     header h1 {
       font-size: 2.4rem;
       font-weight: 600;
-      color: #A8863A;
+      color: var(--card-border);
       letter-spacing: 2px;
     }
 
-    /* Main container */
     main {
       flex: 1;
       display: flex;
@@ -51,65 +58,73 @@
       padding: 3rem 1rem;
     }
 
-    /* Form card */
     form {
-      background-color: #112211;
-      border: 2px solid #A8863A;
+      background-color: var(--card-bg);
+      border: 2px solid var(--card-border);
       border-radius: 12px;
       box-shadow: 0 0 20px rgba(168, 134, 58, 0.5);
       padding: 2rem;
       max-width: 400px;
       width: 100%;
     }
+
     form h2 {
       text-align: center;
       margin-bottom: 1.5rem;
       font-size: 1.8rem;
       font-weight: 600;
-      color: #A8863A;
+      color: var(--card-border);
     }
 
-    /* Labels & inputs */
     label {
       display: block;
       margin-top: 1.2rem;
       font-weight: 600;
     }
+
     input[type="text"],
     input[type="date"],
     input[type="number"],
     select {
       margin-top: 0.4rem;
       width: 100%;
-      padding: 8px 10px;
+      padding: 8px 12px;
       border: none;
-      border-radius: 6px;
-      background-color: #333;
-      color: #fff;
+      border-radius: var(--input-radius);
+      background-color: var(--input-bg);
+      color: #ffffff;
       font-size: 1rem;
+      outline: none;
+      transition: background-color 0.2s ease;
     }
 
-    /* Submit button */
+    input:focus,
+    select:focus {
+      background-color: #222222;
+    }
+
     button {
       margin-top: 1.5rem;
       width: 100%;
-      background-color: #A8863A;
-      color: #0D1C0E;
+      background-color: var(--btn-bg);
+      color: var(--btn-text);
       border: none;
-      padding: 12px;
+      padding: var(--btn-padding);
       font-size: 1.2rem;
       font-weight: 600;
-      border-radius: 10px;
+      border-radius: var(--btn-radius);
       cursor: pointer;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
       transition: background-color 0.3s ease, transform 0.3s ease;
     }
-    button:hover {
-      background-color: #907534;
+
+    button:hover,
+    button:focus {
+      background-color: var(--btn-bg-hover);
       transform: scale(1.03);
+      outline: none;
     }
 
-    /* Status message */
     #statusMessage {
       margin-top: 1rem;
       font-size: 1.1rem;
@@ -117,25 +132,34 @@
       text-align: center;
     }
 
-    /* Back link */
     .back-home {
       margin-top: 1.5rem;
       text-align: center;
     }
+
     .back-home a {
-      color: #A8863A;
+      color: var(--btn-text);
       font-weight: 600;
       text-decoration: none;
     }
+
     .back-home a:hover {
       text-decoration: underline;
     }
+
+    @media (max-width: 600px) {
+      input, select, button {
+        font-size: 1rem;
+      }
+    }
   </style>
 </head>
+
 <body>
   <header>
     <h1>Elm Park Snooker Club</h1>
   </header>
+
   <main>
     <form id="scoreForm">
       <h2>Submit Snooker Score</h2>
@@ -231,7 +255,7 @@
       const status = document.getElementById('statusMessage');
       const submitBtn = form.querySelector("button[type='submit']");
       submitBtn.disabled = true;
-      status.style.color = "#ffffff";
+      status.style.color = getComputedStyle(document.documentElement).getPropertyValue('--btn-text');
       status.textContent = "Submitting...";
 
       fetch(url, {
