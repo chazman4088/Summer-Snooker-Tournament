@@ -3,72 +3,129 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>High Breaks - Elm Park Snooker Club</title>
+  <title>High Breaks ‒ Elm Park Snooker Club</title>
+
+  <!-- Google Font for consistency -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
+
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #111;
-      color: white;
+    /* reset */
+    *, *::before, *::after {
+      box-sizing: border-box;
       margin: 0;
-      padding: 20px;
+      padding: 0;
+    }
+
+    /* base */
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background-color: #0D1C0E;
+      color: #ffffff;
+      font-family: 'Montserrat', sans-serif;
+      line-height: 1.6;
+    }
+
+    /* header */
+    header {
+      text-align: center;
+      padding: 30px 1rem;
+      border-bottom: 2px solid #A8863A;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+    header h1 {
+      font-size: 2.4rem;
+      font-weight: 600;
+      color: #A8863A;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* main */
+    main {
+      flex: 1;
+      padding: 2rem 1rem;
       text-align: center;
     }
-    h1 {
-      margin-bottom: 20px;
-      color: #4CAF50;
-    }
+
+    /* high breaks table */
     table {
-      margin: 0 auto;
-      border-collapse: collapse;
       width: 100%;
-      max-width: 500px;
+      max-width: 600px;
+      margin: 0 auto 20px;
+      border-collapse: collapse;
+      background-color: #112211;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
     th, td {
       padding: 12px 16px;
-      border-bottom: 1px solid #444;
+      border-bottom: 1px solid #333;
     }
     th {
-      background-color: #222;
-      font-size: 18px;
-      color: #4CAF50;
+      background-color: #A8863A;
+      color: #0D1C0E;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-size: 1rem;
     }
     td {
-      font-size: 16px;
+      font-size: 0.95rem;
     }
-    tr:nth-child(even) {
+    tr:nth-child(even) td {
       background-color: #1a1a1a;
     }
+    tr:hover td {
+      background-color: #1f1f1f;
+    }
+
+    /* back button */
     .back-btn {
       display: inline-block;
-      margin-top: 20px;
+      margin-top: 10px;
       padding: 10px 20px;
-      background-color: #4CAF50;
-      color: white;
+      background-color: #A8863A;
+      color: #0D1C0E;
       text-decoration: none;
+      font-weight: 600;
       border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      transition: background-color 0.3s ease, transform 0.2s ease;
     }
     .back-btn:hover {
-      background-color: #45a049;
+      background-color: #907534;
+      transform: translateY(-2px);
     }
   </style>
 </head>
+
 <body>
-  <h1>High Breaks</h1>
+  <header>
+    <h1>High Breaks</h1>
+  </header>
 
-  <table id="highBreakTable">
-    <thead>
-      <tr>
-        <th>Player</th>
-        <th>Break</th>
-        <th>Date</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr><td colspan="3">Loading...</td></tr>
-    </tbody>
-  </table>
+  <main>
+    <table id="highBreakTable">
+      <thead>
+        <tr>
+          <th>Player</th>
+          <th>Break</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td colspan="3">Loading...</td></tr>
+      </tbody>
+    </table>
 
-  <a href="index.html" class="back-btn">← Back to Home</a>
+    <a href="index.html" class="back-btn">← Back to Home</a>
+  </main>
 
   <script>
     fetch('https://script.google.com/macros/s/AKfycbxc4Vlz3A7soUakV8gX_Bw4Z7RRfjBZpwhiOkLAUYhY9Ef8s_lQvuWCBAaSIbSZ7pNSWw/exec?highbreaks=true')
