@@ -2,34 +2,56 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Submission Result</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Submission Result ‒ Elm Park Snooker Club</title>
+
+  <!-- Google Font for consistency -->
+  <link 
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" 
+    rel="stylesheet" 
+  />
+
   <style>
+    /* reset */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* base */
     body {
-      background-color: #111;
-      color: white;
-      font-family: Arial, sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100vh;
-      margin: 0;
+      min-height: 100vh;
+      background-color: #0D1C0E;
+      color: #ffffff;
+      font-family: 'Montserrat', sans-serif;
       text-align: center;
+      padding: 1rem;
     }
+
+    /* status message */
     .message {
       font-size: 1.5rem;
-      margin-bottom: 20px;
+      font-weight: 600;
+      color: #A8863A;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
     }
+
+    /* redirect note */
     .redirect {
       font-size: 1rem;
-      color: #aaa;
+      color: #cccccc;
     }
   </style>
 </head>
 <body>
-  <div class="message" id="message">Processing...</div>
-  <div class="redirect">Returning to score page in 5 seconds...</div>
+  <div class="message" id="message">Processing…</div>
+  <div class="redirect">Returning to score page in 5 seconds…</div>
 
   <script>
     const params = new URLSearchParams(window.location.search);
