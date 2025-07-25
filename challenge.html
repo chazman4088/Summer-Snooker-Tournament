@@ -4,28 +4,49 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Challenge a Player - Elm Park Snooker Club</title>
+
+  <!-- Google Font for consistency -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
+
   <style>
-    body {
+    /* Reset */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
       margin: 0;
-      background-color: #111;
-      color: white;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 0;
+    }
+
+    /* Base */
+    body {
       display: flex;
       flex-direction: column;
       min-height: 100vh;
+      background-color: #0D1C0E;
+      color: #ffffff;
+      font-family: 'Montserrat', sans-serif;
+      line-height: 1.6;
     }
+
+    /* Header */
     header {
-      background-color: #222;
-      border-bottom: 4px solid #4CAF50;
-      padding: 2rem 1rem;
       text-align: center;
+      padding: 30px 1rem;
+      border-bottom: 2px solid #A8863A;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     }
     header h1 {
-      margin: 0;
       font-size: 2.4rem;
-      color: #4CAF50;
-      font-weight: bold;
+      font-weight: 600;
+      color: #A8863A;
+      letter-spacing: 2px;
     }
+
+    /* Main content */
     main {
       flex: 1;
       display: flex;
@@ -33,110 +54,142 @@
       align-items: center;
       padding: 3rem 1rem;
     }
+
+    /* Form card */
     form {
-      background-color: #222;
-      padding: 2rem;
+      background-color: #112211;
+      border: 2px solid #A8863A;
       border-radius: 12px;
-      box-shadow: 0 0 20px rgba(76, 175, 80, 0.5);
-      max-width: 400px;
+      box-shadow: 0 0 20px rgba(168, 134, 58, 0.5);
+      padding: 2rem;
       width: 100%;
+      max-width: 400px;
       margin-bottom: 2rem;
     }
     form h2 {
       text-align: center;
       margin-bottom: 1.5rem;
-      font-weight: 700;
-      color: #4CAF50;
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #A8863A;
     }
+
+    /* Labels & selects */
     label {
       display: block;
-      margin-top: 1.1rem;
+      margin-top: 1.2rem;
       font-weight: 600;
-      font-size: 1rem;
     }
     select {
-      margin-top: 0.3rem;
+      margin-top: 0.4rem;
       width: 100%;
       padding: 8px 10px;
-      border-radius: 6px;
       border: none;
+      border-radius: 6px;
       background-color: #333;
-      color: white;
+      color: #ffffff;
       font-size: 1rem;
-      box-sizing: border-box;
     }
-    button {
+
+    /* Submit button */
+    button[type="submit"] {
       margin-top: 2rem;
       width: 100%;
-      background-color: #4CAF50;
+      background-color: #A8863A;
+      color: #0D1C0E;
       border: none;
       padding: 12px;
-      border-radius: 10px;
       font-size: 1.2rem;
-      font-weight: 700;
-      color: white;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-    button:hover {
-      background-color: #3e8e41;
-    }
-    .back-btn {
-      display: block;
-      width: 105px;
-      padding: 10px 20px;
-      margin-top: 20px;
-      padding: 10px 20px;
-      background-color: #4CAF50;
-      font-weight: 700;
-      color: white;
-      text-align: 0 auto;
-      margin: 0 auto;
-      text-decoration: none;
+      font-weight: 600;
       border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      transition: background-color 0.3s ease, transform 0.3s ease;
     }
+    button[type="submit"]:hover {
+      background-color: #907534;
+      transform: scale(1.03);
+    }
+
+    /* Table wrapper */
     .table-wrapper {
       width: 100%;
       overflow-x: auto;
-      display: block;
+      margin-top: 1rem;
     }
+
+    /* Challenge table */
     table {
-      border-collapse: collapse;
-      margin: 15px auto 0;
       width: 100%;
       min-width: 600px;
       max-width: 800px;
+      margin: 0 auto;
+      border-collapse: collapse;
+      background-color: #112211;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
     th, td {
-      border: 1px solid #444;
       padding: 10px;
+      border: 1px solid #333;
       text-align: left;
     }
     th {
-      background-color: #222;
-      color: #4CAF50;
+      background-color: #A8863A;
+      color: #0D1C0E;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 1rem;
+      letter-spacing: 0.5px;
     }
-    tr:nth-child(even) {
+    td {
+      font-size: 0.95rem;
+    }
+    tr:nth-child(even) td {
       background-color: #1a1a1a;
     }
+
+    /* Delete button */
     .clear-btn {
       background-color: #e53935;
-      color: white;
+      color: #ffffff;
       border: none;
       padding: 6px 10px;
       border-radius: 6px;
       cursor: pointer;
-      font-weight: bold;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
     }
     .clear-btn:hover {
       background-color: #c62828;
     }
+
+    /* Back to home */
+    .back-btn {
+      display: inline-block;
+      margin: 20px auto 0;
+      padding: 10px 20px;
+      background-color: #A8863A;
+      color: #0D1C0E;
+      text-decoration: none;
+      font-weight: 600;
+      border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    .back-btn:hover {
+      background-color: #907534;
+      transform: translateY(-2px);
+    }
   </style>
 </head>
+
 <body>
   <header>
     <h1>Elm Park Snooker Club</h1>
   </header>
+
   <main>
     <form method="GET" action="challengeresult.html">
       <h2>Challenge a Player</h2>
@@ -213,7 +266,8 @@
   <a href="index.html" class="back-btn">Back to Home</a>
 
   <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbzDIa7fxao0FyESBu51_wZ69Z47eUUmTE6j86667Fgz6xmBei2txdPqGaJeQQIoUmXBMw/exec";
+    const scriptURL =
+      "https://script.google.com/macros/s/AKfycbzDIa7fxao0FyESBu51_wZ69Z47eUUmTE6j86667Fgz6xmBei2txdPqGaJeQQIoUmXBMw/exec";
     let challengeData = [];
 
     function formatDateString(dateStr) {
@@ -221,8 +275,8 @@
       if (/^\d{2}\/\d{2}\/\d{4}$/.test(dateStr)) return dateStr;
       const d = new Date(dateStr);
       if (isNaN(d)) return "";
-      const day = String(d.getDate()).padStart(2, '0');
-      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, "0");
+      const month = String(d.getMonth() + 1).padStart(2, "0");
       const year = d.getFullYear();
       return `${day}/${month}/${year}`;
     }
@@ -235,31 +289,35 @@
 
       fetch(scriptURL, {
         method: "POST",
-        body: formData
-      }).then(() => {
-        loadChallenges();
-      }).catch(() => {
-        alert("Error deleting challenge.");
-      });
+        body: formData,
+      })
+        .then(() => {
+          loadChallenges();
+        })
+        .catch(() => {
+          alert("Error deleting challenge.");
+        });
     }
 
     function showChallenges(data) {
       challengeData = data;
-
-      const tbody = document.querySelector('#challengeTable tbody');
+      const tbody = document.querySelector("#challengeTable tbody");
       if (!Array.isArray(data) || data.length === 0) {
         tbody.innerHTML = "<tr><td colspan='5'>No challenges found</td></tr>";
         return;
       }
 
-      const rows = data.map(row => {
+      const rows = data.map((row) => {
         const dueDateStr = formatDateString(row.dueDate);
-        const dueParts = dueDateStr.split('/');
-        const dueDate = new Date(`${dueParts[2]}-${dueParts[1]}-${dueParts[0]}`);
+        const dueParts = dueDateStr.split("/");
+        const dueDate = new Date(
+          `${dueParts[2]}-${dueParts[1]}-${dueParts[0]}`
+        );
         const today = new Date();
-        const diffDays = Math.ceil((dueDate - today) / (1000 * 60 * 60 * 24));
+        const diffDays = Math.ceil(
+          (dueDate - today) / (1000 * 60 * 60 * 24)
+        );
         let dueStyle = "";
-
         if (diffDays < 0) {
           dueStyle = 'style="background-color:#b71c1c;"';
         } else if (diffDays <= 2) {
@@ -272,23 +330,26 @@
             <td>${row.challengedBy}</td>
             <td>${formatDateString(row.date)}</td>
             <td ${dueStyle}>${dueDateStr}</td>
-            <td><button class="clear-btn" onclick="clearChallenge('${row.player}', '${row.challengedBy}')">Delete</button></td>
+            <td>
+              <button class="clear-btn" onclick="clearChallenge('${row.player}', '${row.challengedBy}')">
+                Delete
+              </button>
+            </td>
           </tr>
         `;
       });
 
-      tbody.innerHTML = rows.join('');
+      tbody.innerHTML = rows.join("");
     }
 
     function loadChallenges() {
-      const script = document.createElement('script');
+      const script = document.createElement("script");
       script.src = scriptURL + "?callback=showChallenges";
       document.body.appendChild(script);
     }
 
     window.onload = function () {
       loadChallenges();
-
       const form = document.querySelector("form");
       form.addEventListener("submit", function (e) {
         const selectedPlayer = document.getElementById("player").value;
@@ -296,11 +357,13 @@
         const startOfWeek = new Date(thisWeek);
         startOfWeek.setDate(thisWeek.getDate() - thisWeek.getDay());
 
-        // Check if the player is already under challenge
-        const challengeCount = challengeData.filter(c => c.player === selectedPlayer).length;
-
+        const challengeCount = challengeData.filter(
+          (c) => c.player === selectedPlayer
+        ).length;
         if (challengeCount > 0) {
-          const confirmProceed = confirm(`${selectedPlayer} has already been challenged. Do you still want to proceed?`);
+          const confirmProceed = confirm(
+            `${selectedPlayer} has already been challenged. Do you still want to proceed?`
+          );
           if (!confirmProceed) {
             e.preventDefault();
           }
