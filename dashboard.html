@@ -1,14 +1,86 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Dashboard - Elm Park Snooker Club</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard ‒ Elm Park Snooker Club</title>
+
+  <!-- Google Font for consistency -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
+
   <style>
-    /* remove default white gap and match the page background */
-    html, body {
+    /* reset */
+    *, *::before, *::after {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      background-color: #111;
+    }
+
+    /* base */
+    body {
+      background-color: #0D1C0E;
+      color: #ffffff;
+      font-family: 'Montserrat', sans-serif;
+      line-height: 1.6;
+    }
+
+    /* header */
+    header {
+      text-align: center;
+      padding: 30px 1rem;
+      border-bottom: 2px solid #A8863A;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+    header h1 {
+      font-size: 2.4rem;
+      font-weight: 600;
+      color: #A8863A;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* main */
+    main {
+      padding: 2rem 1rem;
+    }
+
+    /* center buttons */
+    .center-button {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    /* buttons */
+    .btn {
+      display: inline-block;
+      background-color: #A8863A;
+      color: #0D1C0E;
+      padding: 12px 24px;
+      text-decoration: none;
+      font-weight: 600;
+      border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    .btn:hover {
+      background-color: #907534;
+      transform: translateY(-2px);
+    }
+
+    /* embedded chart */
+    .chart-container {
+      max-width: 1200px;
+      margin: 20px auto 0;
+      text-align: center;
+    }
+    .chart-container iframe {
+      width: 100%;
+      max-width: 600px;
+      height: 300px;
+      border: 0;
     }
   </style>
 </head>
@@ -17,25 +89,23 @@
     <h1>Elm Park Snooker Club</h1>
   </header>
 
-  <div class="center-button">
-    <a href="winrate.html" class="btn">Winrate</a>
-  </div>
-  <div class="center-button">
-    <a href="averagepoints.html" class="btn">Average points scored per frame</a>
-  </div>
-  <div class="center-button">
-    <a href="averageconceded.html" class="btn">Average points conceded per frame</a>
-  </div>
+  <main>
+    <div class="center-button">
+      <a href="winrate.html" class="btn">Winrate</a>
+    </div>
+    <div class="center-button">
+      <a href="averagepoints.html" class="btn">Average points scored per frame</a>
+    </div>
+    <div class="center-button">
+      <a href="averageconceded.html" class="btn">Average points conceded per frame</a>
+    </div>
 
-  <!-- Embedded Looker Studio chart -->
-  <div style="max-width:1200px; margin: 20px auto 0;">
-    <iframe
-  width="600" height="300"
-  src="https://datastudio.google.com/embed/reporting/9e18942c-8123-4fc9-ab62-71789a415ad0/page/YAhRF?embed=true"
-  frameborder="0"
-  style="border:0"
-  allowfullscreen>
-</iframe>
-  </div>
+    <div class="chart-container">
+      <iframe
+        src="https://datastudio.google.com/embed/reporting/9e18942c-8123-4fc9-ab62-71789a415ad0/page/YAhRF?embed=true"
+        allowfullscreen>
+      </iframe>
+    </div>
+  </main>
 </body>
 </html>
