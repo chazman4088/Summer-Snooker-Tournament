@@ -4,28 +4,45 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Submit Snooker Score - Elm Park Snooker Club</title>
+
+  <!-- Google Font for consistency with the homepage -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
+
   <style>
-    body {
+    /* Base reset & body */
+    * {
+      box-sizing: border-box;
       margin: 0;
-      background-color: #111;
-      color: white;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 0;
+    }
+    body {
       display: flex;
       flex-direction: column;
       min-height: 100vh;
+      background-color: #0D1C0E;
+      color: #ffffff;
+      font-family: 'Montserrat', sans-serif;
+      line-height: 1.6;
     }
+
+    /* Header */
     header {
-      background-color: #222;
-      border-bottom: 4px solid #4CAF50;
-      padding: 2rem 1rem;
       text-align: center;
+      padding: 30px 1rem;
+      border-bottom: 2px solid #A8863A;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     }
     header h1 {
-      margin: 0;
       font-size: 2.4rem;
-      color: #4CAF50;
-      font-weight: bold;
+      font-weight: 600;
+      color: #A8863A;
+      letter-spacing: 2px;
     }
+
+    /* Main container */
     main {
       flex: 1;
       display: flex;
@@ -33,74 +50,85 @@
       align-items: flex-start;
       padding: 3rem 1rem;
     }
+
+    /* Form card */
     form {
-      background-color: #222;
-      padding: 2rem;
+      background-color: #112211;
+      border: 2px solid #A8863A;
       border-radius: 12px;
-      box-shadow: 0 0 20px rgba(76, 175, 80, 0.5);
+      box-shadow: 0 0 20px rgba(168, 134, 58, 0.5);
+      padding: 2rem;
       max-width: 400px;
       width: 100%;
     }
     form h2 {
       text-align: center;
       margin-bottom: 1.5rem;
-      font-weight: 700;
-      color: #4CAF50;
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #A8863A;
     }
+
+    /* Labels & inputs */
     label {
       display: block;
-      margin-top: 1.1rem;
+      margin-top: 1.2rem;
       font-weight: 600;
-      font-size: 1rem;
     }
     input[type="text"],
     input[type="date"],
     input[type="number"],
     select {
-      margin-top: 0.3rem;
+      margin-top: 0.4rem;
       width: 100%;
       padding: 8px 10px;
-      border-radius: 6px;
       border: none;
+      border-radius: 6px;
       background-color: #333;
-      color: white;
+      color: #fff;
       font-size: 1rem;
-      box-sizing: border-box;
     }
+
+    /* Submit button */
     button {
       margin-top: 1.5rem;
       width: 100%;
-      background-color: #4CAF50;
+      background-color: #A8863A;
+      color: #0D1C0E;
       border: none;
       padding: 12px;
-      border-radius: 10px;
       font-size: 1.2rem;
-      font-weight: 700;
-      color: white;
+      font-weight: 600;
+      border-radius: 10px;
       cursor: pointer;
-      transition: background-color 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      transition: background-color 0.3s ease, transform 0.3s ease;
     }
     button:hover {
-      background-color: #3e8e41;
+      background-color: #907534;
+      transform: scale(1.03);
     }
-    .back-home {
-      margin-top: 1rem;
-      text-align: center;
-    }
-    .back-home a {
-      color: #4CAF50;
-      font-size: 1rem;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    .back-home a:hover {
-      text-decoration: underline;
-    }
+
+    /* Status message */
     #statusMessage {
       margin-top: 1rem;
       font-size: 1.1rem;
-      font-weight: bold;
+      font-weight: 600;
       text-align: center;
+    }
+
+    /* Back link */
+    .back-home {
+      margin-top: 1.5rem;
+      text-align: center;
+    }
+    .back-home a {
+      color: #A8863A;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .back-home a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
@@ -132,7 +160,7 @@
         <option>Gareth Ryan</option>
         <option>Gerry Casey</option>
         <option>Jimmy Greeley</option>
-        <option>Louis Murphy</option> 
+        <option>Louis Murphy</option>
         <option>Manus Sweeney</option>
         <option>Mark McArdle</option>
         <option>Michael Byers</option>
@@ -185,7 +213,6 @@
       <input type="number" name="highbreak2" id="highbreak2" min="20" placeholder="Optional" />
 
       <button type="submit">Submit Score</button>
-
       <p id="statusMessage"></p>
 
       <div class="back-home">
@@ -204,7 +231,7 @@
       const status = document.getElementById('statusMessage');
       const submitBtn = form.querySelector("button[type='submit']");
       submitBtn.disabled = true;
-      status.style.color = "white";
+      status.style.color = "#ffffff";
       status.textContent = "Submitting...";
 
       fetch(url, {
