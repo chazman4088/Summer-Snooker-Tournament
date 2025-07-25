@@ -4,75 +4,146 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Summer Snooker Ladder</title>
+
+  <!-- Google Font for a clean, professional look -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
+
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #111;
-      color: white;
+    /* Reset and base */
+    *, *::before, *::after {
+      box-sizing: border-box;
       margin: 0;
-      padding: 20px;
+      padding: 0;
+    }
+    body {
+      background-color: #0D1C0E;
+      color: #ffffff;
+      font-family: 'Montserrat', sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    header {
+      text-align: center;
+      padding: 30px 1rem;
+      border-bottom: 2px solid #A8863A;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+    header h1 {
+      font-size: 2.4rem;
+      font-weight: 600;
+      color: #A8863A;
+      letter-spacing: 2px;
+    }
+
+    /* Main content wrapper */
+    main {
+      padding: 2rem 1rem;
       text-align: center;
     }
-    h1 {
-      margin-bottom: 20px;
-    }
+
+    /* Leaderboard table */
     table {
-      margin: 0 auto;
-      border-collapse: collapse;
       width: 100%;
       max-width: 600px;
+      margin: 0 auto 20px;
+      border-collapse: collapse;
+      background-color: #112211;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
     th, td {
       padding: 12px 16px;
-      border-bottom: 1px solid #444;
+      border-bottom: 1px solid #333;
     }
     th {
-      background-color: #4CAF50;
-      font-size: 18px;
+      background-color: #A8863A;
+      color: #0D1C0E;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-size: 1rem;
     }
     td {
-      font-size: 16px;
+      font-size: 0.95rem;
     }
-    tr:nth-child(even) {
+    tr:nth-child(even) td {
       background-color: #1a1a1a;
     }
+    tr:hover td {
+      background-color: #1f1f1f;
+    }
+
+    /* Back to home button */
     .back-btn {
       display: inline-block;
-      margin-top: 20px;
+      margin-top: 10px;
       padding: 10px 20px;
-      background-color: #4CAF50;
-      color: white;
+      background-color: #A8863A;
+      color: #0D1C0E;
       text-decoration: none;
+      font-weight: 600;
       border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      transition: background-color 0.3s ease, transform 0.2s ease;
     }
     .back-btn:hover {
-      background-color: #45a049;
+      background-color: #907534;
+      transform: translateY(-2px);
     }
-    /* modal */
+
+    /* Modal backdrop */
     #playerModal {
       display: none;
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.7);
+      background: rgba(0, 0, 0, 0.7);
       align-items: center;
       justify-content: center;
+      z-index: 1000;
     }
+    /* Modal content card */
     #playerModal .modal-content {
-      background: #222;
-      padding: 20px;
+      background-color: #112211;
+      border: 2px solid #A8863A;
       border-radius: 8px;
+      padding: 20px;
       min-width: 280px;
-      color: white;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
       text-align: left;
     }
+    #playerModal .modal-content h2 {
+      margin-bottom: 10px;
+      color: #A8863A;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    #playerModal .modal-content p {
+      margin: 6px 0;
+      font-size: 0.95rem;
+    }
     #playerModal button {
-      margin-top: 10px;
+      margin-top: 12px;
       padding: 6px 12px;
-      background: #4CAF50;
-      color: white;
+      background-color: #A8863A;
+      color: #0D1C0E;
       border: none;
       border-radius: 4px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
     }
+    #playerModal button:hover {
+      background-color: #907534;
+      transform: translateY(-1px);
+    }
+
     /* XP bar */
     .xp-bar {
       background: #444;
@@ -82,33 +153,38 @@
       margin: 4px 0 10px;
     }
     .xp-fill {
-      background: #4CAF50;
+      background: #A8863A;
       height: 100%;
       width: 0%;
       transition: width 0.3s ease;
     }
   </style>
 </head>
+
 <body>
-  <h1>Summer Snooker Ladder</h1>
+  <header>
+    <h1>Summer Snooker Ladder</h1>
+  </header>
 
-  <table id="leaderboard">
-    <thead>
-      <tr>
-        <th>Position</th>
-        <th>Player</th>
-        <th>Wins</th>
-        <th>Losses</th>
-        <th>Handicap</th>
-        <th>XP</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr><td colspan="6">Loading...</td></tr>
-    </tbody>
-  </table>
+  <main>
+    <table id="leaderboard">
+      <thead>
+        <tr>
+          <th>Position</th>
+          <th>Player</th>
+          <th>Wins</th>
+          <th>Losses</th>
+          <th>Handicap</th>
+          <th>XP</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td colspan="6">Loading...</td></tr>
+      </tbody>
+    </table>
 
-  <a href="index.html" class="back-btn">Back to Home</a>
+    <a href="index.html" class="back-btn">Back to Home</a>
+  </main>
 
   <!-- Player Info Modal -->
   <div id="playerModal">
@@ -127,11 +203,10 @@
   <script>
     const API = 'https://script.google.com/macros/s/AKfycbxc4Vlz3A7soUakV8gX_Bw4Z7RRfjBZpwhiOkLAUYhY9Ef8s_lQvuWCBAaSIbSZ7pNSWw/exec';
     
-    // XP thresholds per level: level1=50,2=100,3=150,...
     function getLevelInfo(xp) {
-      const level = Math.floor(xp/50) + 1;
-      const prevReq = 50*(level-1);
-      const nextReq = 50*level;
+      const level = Math.floor(xp / 50) + 1;
+      const prevReq = 50 * (level - 1);
+      const nextReq = 50 * level;
       const progress = ((xp - prevReq) / (nextReq - prevReq)) * 100;
       return { level, progress };
     }
@@ -145,7 +220,7 @@
       tbody.innerHTML = players.map((p,i) => `
         <tr>
           <td>${i+1}</td>
-          <td class="playerName" data-name="${p.name}" style="cursor:pointer; color:#4CAF50;">
+          <td class="playerName" data-name="${p.name}" style="cursor:pointer;">
             ${p.name}
           </td>
           <td>${p.wins}</td>
@@ -154,6 +229,7 @@
           <td>${p.xp}</td>
         </tr>
       `).join('');
+      
       document.querySelectorAll('.playerName').forEach(td => {
         td.onclick = () => {
           const name = td.dataset.name;
@@ -169,12 +245,11 @@
             .then(r => r.json())
             .then(stats => {
               document.getElementById('loadingText').textContent = '';
-              document.getElementById('modalWinRate').textContent = (stats.winRate*100).toFixed(1);
+              document.getElementById('modalWinRate').textContent = (stats.winRate * 100).toFixed(1);
               document.getElementById('modalAvg').textContent = stats.avgPointsPerFrame.toFixed(1);
               const { level, progress } = getLevelInfo(stats.xp);
               document.getElementById('modalXPBar').style.width = progress + '%';
-              document.getElementById('modalXPText').textContent = 
-                `Lvl ${level} (${stats.xp} XP)`;
+              document.getElementById('modalXPText').textContent = `Lvl ${level} (${stats.xp} XP)`;
             })
             .catch(console.error);
         };
@@ -187,7 +262,7 @@
 
     function loadLeaderboard() {
       const script = document.createElement('script');
-      script.src = API+'?callback=showLeaderboard';
+      script.src = API + '?callback=showLeaderboard';
       document.body.appendChild(script);
     }
 
