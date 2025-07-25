@@ -4,7 +4,72 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Elm Park Snooker Club</title>
-  <link rel="stylesheet" href="style.css" />
+
+  <!-- Google Font for a clean, professional look -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    /* Base reset and body */
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0D1C0E;
+      color: #ffffff;
+      font-family: 'Montserrat', sans-serif;
+      line-height: 1.6;
+    }
+
+    /* Header styling */
+    header {
+      text-align: center;
+      padding: 30px 0;
+      border-bottom: 2px solid #A8863A;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+      font-weight: 600;
+      color: #A8863A;
+      letter-spacing: 2px;
+    }
+
+    /* Main container */
+    main {
+      max-width: 480px;
+      margin: 40px auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Center each button wrapper */
+    .center-button {
+      text-align: center;
+    }
+
+    /* Button styling */
+    .btn {
+      display: inline-block;
+      background-color: #A8863A;
+      color: #0D1C0E;
+      padding: 12px 24px;
+      text-decoration: none;
+      font-weight: 600;
+      border-radius: 4px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #907534;
+      transform: scale(1.03);
+    }
+  </style>
 </head>
 <body>
   <header>
