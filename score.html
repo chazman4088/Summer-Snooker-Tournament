@@ -4,7 +4,155 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Elm Park Snooker Club – Submit Score</title>
-  <link rel="stylesheet" href="style.css">
+
+  <style>
+    :root {
+      --page-bg:        #112216;    /* deep green background */
+      --card-bg:        #112211;    /* slightly lighter card background */
+      --card-border:    #A8863A;    /* warm gold border */
+      --btn-bg:         #000000;    /* black button background */
+      --btn-text:       #B2935C;    /* warm gold text */
+      --btn-bg-hover:   #333333;    /* charcoal hover state */
+      --btn-padding:    12px 24px;
+      --btn-radius:     20px;       /* pill shape */
+      --font-stack:     'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      --input-bg:       #000000;    /* black input background */
+      --input-radius:   20px;       /* pill shape for inputs */
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-stack);
+      background-color: var(--page-bg);
+      color: var(--btn-text);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    header {
+      text-align: center;
+      padding: 30px 1rem;
+      border-bottom: 2px solid var(--card-border);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    header h1 {
+      font-size: 2.4rem;
+      font-weight: 600;
+      color: var(--card-border);
+      letter-spacing: 2px;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 3rem 1rem;
+    }
+
+    form {
+      background-color: var(--card-bg);
+      border: 2px solid var(--card-border);
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(168, 134, 58, 0.5);
+      padding: 2rem;
+      max-width: 400px;
+      width: 100%;
+    }
+
+    form h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--card-border);
+    }
+
+    label {
+      display: block;
+      margin-top: 1.2rem;
+      font-weight: 600;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="number"],
+    select {
+      margin-top: 0.4rem;
+      width: 100%;
+      padding: 8px 12px;
+      border: none;
+      border-radius: var(--input-radius);
+      background-color: var(--input-bg);
+      color: #ffffff;
+      font-size: 1rem;
+      outline: none;
+      transition: background-color 0.2s ease;
+    }
+
+    input:focus,
+    select:focus {
+      background-color: #222222;
+    }
+
+    button {
+      margin-top: 1.5rem;
+      width: 100%;
+      background-color: var(--btn-bg);
+      color: var(--btn-text);
+      border: none;
+      padding: var(--btn-padding);
+      font-size: 1.2rem;
+      font-weight: 600;
+      border-radius: var(--btn-radius);
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    button:hover,
+    button:focus {
+      background-color: var(--btn-bg-hover);
+      transform: scale(1.03);
+      outline: none;
+    }
+
+    #statusMessage {
+      margin-top: 1rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .back-home {
+      margin-top: 1.5rem;
+      text-align: center;
+    }
+
+    .back-home a {
+      color: var(--btn-text);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .back-home a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+      input, select, button {
+        font-size: 1rem;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -12,8 +160,8 @@
     <h1>Elm Park Snooker Club</h1>
   </header>
 
-  <main style="display: flex; justify-content: center; align-items: center; padding: 2rem; min-height: 100vh;">
-    <form id="scoreForm" style="width: 100%; max-width: 600px;">
+  <main>
+    <form id="scoreForm">
       <h2>Submit Snooker Score</h2>
 
       <label for="match">Match (e.g. Ben v Conor):</label>
