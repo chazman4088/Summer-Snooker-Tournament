@@ -1,228 +1,177 @@
-/*----------------------------------------
-  VARIABLES
-----------------------------------------*/
-:root {
-  /* index + score share these */
-  --page-bg:        #112216;
-  --btn-bg:         #000000;
-  --btn-text:       #B2935C;
-  --btn-bg-hover:   #333333;
-  --btn-padding:    12px 24px;
-  --btn-radius:     20px;
-  --font-stack:     'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-
-  /* score.html-specific */
-  --card-bg:        #112211;
-  --card-border:    #A8863A;
-  --input-bg:       #000000;
-  --input-radius:   20px;
-}
-
-/*----------------------------------------
-  GLOBAL RESETS
-----------------------------------------*/
-*, *::before, *::after {
+/* ================================
+   GLOBAL RESET & BASE STYLES
+   ================================ */
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-/*----------------------------------------
-  BODY
-----------------------------------------*/
-body {
-  font-family: var(--font-stack);
-  background-color: var(--page-bg);
-  color: var(--btn-text);
-  line-height: 1.5;
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
 }
 
-/*----------------------------------------
-  HEADER (shared)
-----------------------------------------*/
+body {
+  font-family: Arial, sans-serif;
+  background-color: #0b3d0b;      /* dark green */
+  color: #d4af37;                 /* gold */
+  line-height: 1.5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ================================
+   HEADER
+   ================================ */
 header {
   text-align: center;
-  padding: 20px;
-  background-color: var(--page-bg);
+  padding: 1.5rem 1rem;
+  border-bottom: 2px solid #d4af37;
 }
 
-/* index.html header */
-header img,
 header h1 {
-  max-width: 300px;
-  width: 100%;
-  height: auto;
-  margin: 0 auto;
+  font-size: 1.75rem;
 }
 
-/*----------------------------------------
-  MAIN + BUTTONS (shared)
-----------------------------------------*/
-main {
+/* ================================
+   MAIN NAV / BUTTON GRID
+   ================================ */
+nav {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 5px 10px;
+  margin: 2rem auto;
+  width: 90%;
+  max-width: 500px;
 }
 
-.center-button {
-  margin-top: 20px;
-}
-
-.center-button:first-child {
-  margin-top: 0;
-}
-
-.btn {
-  display: inline-block;
+nav a {
+  display: block;
+  width: 100%;
+  text-align: center;
+  background-color: #000;
+  color: #d4af37;
+  padding: 0.75rem;
+  margin-bottom: 0.75rem;
   text-decoration: none;
-  background-color: var(--btn-bg);
-  color: var(--btn-text);
-  padding: var(--btn-padding);
-  border-radius: var(--btn-radius);
-  font-size: 16px;
-  font-weight: bold;
-  transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+  font-size: 1rem;
+  border-radius: 0.25rem;
+  transition: background-color 0.25s ease-in-out;
 }
 
-.btn:hover,
-.btn:focus {
-  background-color: var(--btn-bg-hover);
-  outline: none;
-  transform: scale(1.03);
+nav a:hover {
+  background-color: #333;
 }
 
-@media (max-width: 600px) {
-  .btn {
-    width: 100%;
-    text-align: center;
-  }
-}
-
-/*----------------------------------------
-  SCORE.HTML–SPECIFIC STYLES
-----------------------------------------*/
-body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-header {
-  border-bottom: 2px solid var(--card-border);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  padding: 30px 1rem;
-}
-
-header h1 {
-  font-size: 2.4rem;
-  font-weight: 600;
-  color: var(--card-border);
-  letter-spacing: 2px;
-}
-
+/* ================================
+   FORM CONTAINER (e.g., score.html)
+   ================================ */
 main {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding: 3rem 1rem;
+  padding: 2rem 1rem;
 }
 
 form {
-  background-color: var(--card-bg);
-  border: 2px solid var(--card-border);
-  border-radius: 12px;
-  box-shadow: 0 0 20px rgba(168, 134, 58, 0.5);
-  padding: 2rem;
-  max-width: 400px;
   width: 100%;
+  max-width: 600px;
+  background: rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
 }
 
 form h2 {
-  text-align: center;
-  margin-bottom: 1.5rem;
-  font-size: 1.8rem;
-  font-weight: 600;
-  color: var(--card-border);
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
 }
 
-label {
+form label {
   display: block;
-  margin-top: 1.2rem;
-  font-weight: 600;
+  margin-top: 0.75rem;
+  font-weight: bold;
 }
 
-input[type="text"],
-input[type="date"],
-input[type="number"],
-select {
-  margin-top: 0.4rem;
+form input,
+form select,
+form button {
   width: 100%;
-  padding: 8px 12px;
-  border: none;
-  border-radius: var(--input-radius);
-  background-color: var(--input-bg);
-  color: #ffffff;
   font-size: 1rem;
-  outline: none;
-  transition: background-color 0.2s ease;
+  padding: 0.5rem;
+  margin-top: 0.25rem;
+  border: 1px solid #d4af37;
+  border-radius: 0.25rem;
+  background: #fff;
+  color: #000;
 }
 
-input:focus,
-select:focus {
-  background-color: #222222;
-}
-
-/* STYLE THE SUBMIT BUTTON (use same .btn look on <button>) */
-button {
-  margin-top: 1.5rem;
-  width: 100%;
-  background-color: var(--btn-bg);
-  color: var(--btn-text);
-  border: none;
-  padding: var(--btn-padding);
-  font-size: 1.2rem;
-  font-weight: 600;
-  border-radius: var(--btn-radius);
+form button {
+  background-color: #d4af37;
+  color: #000;
+  font-weight: bold;
+  margin-top: 1.25rem;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-  transition: background-color 0.3s ease, transform 0.3s ease;
+  transition: background-color 0.25s ease;
 }
 
-button:hover,
-button:focus {
-  background-color: var(--btn-bg-hover);
-  transform: scale(1.03);
-  outline: none;
-}
-
-#statusMessage {
-  margin-top: 1rem;
-  font-size: 1.1rem;
-  font-weight: 600;
-  text-align: center;
+form button:hover {
+  background-color: #b38b2f;
 }
 
 .back-home {
-  margin-top: 1.5rem;
+  margin-top: 1rem;
   text-align: center;
 }
 
 .back-home a {
-  color: var(--btn-text);
-  font-weight: 600;
+  color: #d4af37;
   text-decoration: none;
+  font-size: 0.95rem;
 }
 
 .back-home a:hover {
   text-decoration: underline;
 }
 
-@media (max-width: 600px) {
-  input,
-  select,
-  button {
-    font-size: 1rem;
+/* ================================
+   MEDIA QUERIES
+   ================================ */
+/* Tablet and above: switch nav to row */
+@media screen and (min-width: 600px) {
+  nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  nav a {
+    flex: 1 1 45%;
+    margin: 0.5rem;
+    font-size: 1.1rem;
+  }
+
+  header h1 {
+    font-size: 2rem;
+  }
+}
+
+/* Desktop: larger text & spacing */
+@media screen and (min-width: 1024px) {
+  html {
+    font-size: 18px;
+  }
+
+  nav a {
+    flex: 1 1 30%;
+    margin: 0.75rem;
+  }
+
+  form {
+    padding: 2rem;
   }
 }
