@@ -1,40 +1,63 @@
-/* style.css */
-
+/*----------------------------------------
+  VARIABLES
+----------------------------------------*/
 :root {
-  --page-bg:        #112216;    /* deep green background */
-  --btn-bg:         #000000;    /* black button background */
-  --btn-text:       #B2935C;    /* warm gold text */
-  --btn-bg-hover:   #333333;    /* charcoal hover state */
+  /* index + score share these */
+  --page-bg:        #112216;
+  --btn-bg:         #000000;
+  --btn-text:       #B2935C;
+  --btn-bg-hover:   #333333;
   --btn-padding:    12px 24px;
-  --btn-radius:     20px;       /* pill shape */
+  --btn-radius:     20px;
   --font-stack:     'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+  /* score.html-specific */
+  --card-bg:        #112211;
+  --card-border:    #A8863A;
+  --input-bg:       #000000;
+  --input-radius:   20px;
 }
 
-/* Global box-sizing */
+/*----------------------------------------
+  GLOBAL RESETS
+----------------------------------------*/
 *, *::before, *::after {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
+/*----------------------------------------
+  BODY
+----------------------------------------*/
 body {
-  margin: 0;
   font-family: var(--font-stack);
   background-color: var(--page-bg);
   color: var(--btn-text);
   line-height: 1.5;
 }
 
+/*----------------------------------------
+  HEADER (shared)
+----------------------------------------*/
 header {
   text-align: center;
-  padding: 20px 0;
+  padding: 20px;
   background-color: var(--page-bg);
 }
 
-header img {
+/* index.html header */
+header img,
+header h1 {
   max-width: 300px;
   width: 100%;
   height: auto;
+  margin: 0 auto;
 }
 
+/*----------------------------------------
+  MAIN + BUTTONS (shared)
+----------------------------------------*/
 main {
   display: flex;
   flex-direction: column;
@@ -47,7 +70,7 @@ main {
 }
 
 .center-button:first-child {
-  margin-top: 0;  /* no gap above the first button */
+  margin-top: 0;
 }
 
 .btn {
@@ -59,18 +82,147 @@ main {
   border-radius: var(--btn-radius);
   font-size: 16px;
   font-weight: bold;
-  transition: background-color 0.2s ease-in-out;
+  transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
 }
 
 .btn:hover,
 .btn:focus {
   background-color: var(--btn-bg-hover);
   outline: none;
+  transform: scale(1.03);
 }
 
 @media (max-width: 600px) {
   .btn {
     width: 100%;
     text-align: center;
+  }
+}
+
+/*----------------------------------------
+  SCORE.HTML–SPECIFIC STYLES
+----------------------------------------*/
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+header {
+  border-bottom: 2px solid var(--card-border);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  padding: 30px 1rem;
+}
+
+header h1 {
+  font-size: 2.4rem;
+  font-weight: 600;
+  color: var(--card-border);
+  letter-spacing: 2px;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 3rem 1rem;
+}
+
+form {
+  background-color: var(--card-bg);
+  border: 2px solid var(--card-border);
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(168, 134, 58, 0.5);
+  padding: 2rem;
+  max-width: 400px;
+  width: 100%;
+}
+
+form h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--card-border);
+}
+
+label {
+  display: block;
+  margin-top: 1.2rem;
+  font-weight: 600;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="number"],
+select {
+  margin-top: 0.4rem;
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  border-radius: var(--input-radius);
+  background-color: var(--input-bg);
+  color: #ffffff;
+  font-size: 1rem;
+  outline: none;
+  transition: background-color 0.2s ease;
+}
+
+input:focus,
+select:focus {
+  background-color: #222222;
+}
+
+/* STYLE THE SUBMIT BUTTON (use same .btn look on <button>) */
+button {
+  margin-top: 1.5rem;
+  width: 100%;
+  background-color: var(--btn-bg);
+  color: var(--btn-text);
+  border: none;
+  padding: var(--btn-padding);
+  font-size: 1.2rem;
+  font-weight: 600;
+  border-radius: var(--btn-radius);
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button:hover,
+button:focus {
+  background-color: var(--btn-bg-hover);
+  transform: scale(1.03);
+  outline: none;
+}
+
+#statusMessage {
+  margin-top: 1rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.back-home {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.back-home a {
+  color: var(--btn-text);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.back-home a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+  input,
+  select,
+  button {
+    font-size: 1rem;
   }
 }
