@@ -7,13 +7,14 @@
 
   <style>
     :root {
-      --page-bg:        #112216;    /* deep green background */
-      --btn-bg:         #000000;    /* black button background */
-      --btn-text:       #B2935C;    /* warm gold text */
-      --btn-bg-hover:   #333333;    /* charcoal hover state */
-      --btn-padding:    12px 24px;
-      --btn-radius:     20px;       /* pill shape */
+      /* updated “old-money” palette */
+      --page-bg:        #0C1D0E;   /* dark green */
+      --btn-bg:         #000000;   /* pitch black */
+      --btn-bg-hover:   #1e1e1e;   /* charcoal */
+      --btn-text:       #A58337;   /* rich gold */
       --font-stack:     'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      --btn-padding:    12px 24px;
+      --btn-radius:     20px;
     }
 
     *, *::before, *::after {
@@ -22,37 +23,37 @@
 
     body {
       margin: 0;
+      padding: 0;
       font-family: var(--font-stack);
       background-color: var(--page-bg);
       color: var(--btn-text);
-      line-height: 1.5;
+      line-height: 1.6;
     }
 
     header {
       text-align: center;
-      padding: 20px 0;
-      background-color: var(--page-bg);
+      padding: 2rem 1rem 0; /* remove bottom padding */
     }
 
-    header h1 {
-      margin: 0;
-      font-size: 2.5rem;
-      font-weight: 600;
-      color: var(--btn-text);
-      letter-spacing: 2px;
+    header img {
+      width: 250px;
+      max-width: 80%;
+      height: auto;
+      display: inline-block;
     }
 
     main {
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 0 5px 10px;
+      padding: 0 1rem 2rem; /* remove top padding */
     }
 
     .center-button {
-      margin-top: 20px;
+      margin: 0.75rem 0;
     }
 
+    /* zero out space above the first button */
     .center-button:first-child {
       margin-top: 0;
     }
@@ -64,16 +65,21 @@
       color: var(--btn-text);
       padding: var(--btn-padding);
       border-radius: var(--btn-radius);
-      font-size: 16px;
-      font-weight: bold;
-      transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      transition: background-color 0.2s ease-in-out,
+                  transform 0.2s ease-in-out,
+                  box-shadow 0.2s ease-in-out;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
     }
 
     .btn:hover,
     .btn:focus {
       background-color: var(--btn-bg-hover);
       outline: none;
-      transform: scale(1.03);
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
     }
 
     @media (max-width: 600px) {
@@ -86,7 +92,7 @@
 </head>
 <body>
   <header>
-    <h1>Elm Park Snooker Club</h1>
+    <img src="ElmParkLogo.PNG" alt="Elm Park Snooker Club Logo" />
   </header>
 
   <main>
